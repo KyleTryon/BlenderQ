@@ -1,0 +1,44 @@
+{
+  "name": "blenderq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.tsx",
+  "type": "module",
+  "bin": {
+    "blenderq": "./dist/app.js"
+  },
+  "scripts": {
+    "dev": "tsx src/app.tsx",
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "fmt": "prettier --write .",
+    "lint": "eslint . --ext .ts,.tsx --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.9.0",
+  "dependencies": {
+    "@inkjs/ui": "^2.0.0",
+    "@types/node": "^22.15.3",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "ink": "^5.2.1",
+    "ink-big-text": "^2.0.0",
+    "ink-gradient": "^3.0.0",
+    "ink-select-input": "^6.2.0",
+    "react": "^18.2.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "overrides": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.26.0",
+    "prettier": "3.5.3"
+  }
+}
