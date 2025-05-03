@@ -1,46 +1,46 @@
 {
-  "compilerOptions": {
-    /* Basic Options */
-    "target": "es2022",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "lib": ["es2022", "dom"], //  Include "dom" in "lib" for React
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "compilerOptions": {
+        /* Basic Options */
+        "target": "es2022",
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "lib": ["es2022", "dom"], //  Include "dom" in "lib" for React
+        "outDir": "./dist",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
 
-    /* React Options */
-    "jsx": "react-jsx",  //  Set "jsx": "react-jsx"
+        /* React Options */
+        "jsx": "react-jsx", //  Set "jsx": "react-jsx"
 
-    /* Strict Type Checking Options */
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
+        /* Strict Type Checking Options */
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
 
-    /* Additional Checks */
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
+        /* Additional Checks */
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
 
-    /* Module Resolution Options */
-    "baseUrl": "./src",
-    "paths": {
-      "*": ["*"]
+        /* Module Resolution Options */
+        "baseUrl": "./src",
+        "paths": {
+            "*": ["*"]
+        },
+        "resolveJsonModule": true,
+
+        /* Source Map Options */
+        "sourceMap": true,
+
+        /* Other Options */
+        "noEmit": false,
+        "isolatedModules": true
     },
-    "resolveJsonModule": true,
-
-    /* Source Map Options */
-    "sourceMap": true,
-
-    /* Other Options */
-    "noEmit": false,
-    "isolatedModules": true,
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
 }

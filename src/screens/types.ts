@@ -1,5 +1,5 @@
-import { RouteKey } from "../router.js";
+import { RouteKey } from '../router.js'
 
 export interface ScreenComponent {
-  navigate: (route: RouteKey) => void;
+    navigate: (route: RouteKey) => void
 }
