@@ -21,10 +21,20 @@ const FilePickerScreen: React.FC<ScreenComponent> = ({ navigate }) => {
         entry.endsWith(".blend")
       );
     });
-    const formatted = entries.map((entry) => ({
-      label: entry,
-      value: path.join(dir, entry),
-    }));
+    const formatted = entries.map((entry) => {
+      const fullPath = path.join(dir, entry);
+      const stat = fs.statSync(fullPath);
+      const isDir = stat.isDirectory();
+      const label = isDir
+        ? `\uf07b ${entry}` // Nerd Font folder
+        : entry.endsWith(".blend")
+        ? `\ue766 ${entry}` // Nerd Font 3D file glyph
+        : entry;
+      return {
+        label,
+        value: fullPath,
+      };
+    });
     setFiles(formatted);
   }, [dir]);
 
