@@ -5,12 +5,9 @@ import fs from "fs";
 import path from "path";
 import os from "os";
 import { ScreenComponent } from "./types.js";
-import { useTheme } from "../theme/theme.js";
-import { CommandBar, quitCommand } from "../components/commandBar.js";
 import { DefaultLayout } from "layouts/defaultLayout.js";
 
 const FilePickerScreen: React.FC<ScreenComponent> = ({ navigate }) => {
-  const { theme } = useTheme();
   const [files, setFiles] = useState<{ label: string; value: string }[]>([]);
   const [dir, setDir] = useState(os.homedir());
 
