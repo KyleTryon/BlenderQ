@@ -6,6 +6,7 @@ import path from "path";
 import os from "os";
 import { ScreenComponent } from "./types.js";
 import { useTheme } from "../theme/theme.js";
+import { CommandBar, quitCommand } from "../components/commandBar.js";
 
 const FilePickerScreen: React.FC<ScreenComponent> = ({ navigate }) => {
   const { theme } = useTheme();
@@ -48,17 +49,19 @@ const FilePickerScreen: React.FC<ScreenComponent> = ({ navigate }) => {
   };
 
   return (
-    <Box
-      {...theme.styles.frame()}
-      flexDirection="column"
-      width="100%"
-      paddingX={1}
-    >
-      <Text>Select a file or folder in: {dir}</Text>
-      <Box marginTop={1}>
-        <SelectInput items={files} onSelect={handleSelect} />
+    <>
+      <Box
+        {...theme.styles.frame()}
+      >
+        <Text>Select a file or folder in: {dir}</Text>
+        <Box marginTop={1}>
+          <SelectInput items={files} onSelect={handleSelect} />
+        </Box>
       </Box>
-    </Box>
+      <CommandBar
+        commands={[quitCommand]}
+      />
+    </>
   );
 };
 

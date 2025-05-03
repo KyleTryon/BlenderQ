@@ -48,6 +48,17 @@ export const themeFactory = (variant: Variant = "normal") =>
         borderStyle: "round",
         borderColor: variants[variant].primaryBorder,
         padding: 1,
+        width: "100%",
+        height: "100%",
+        flexDirection: "column",
+      }),
+      footer: (): BoxProps => ({
+        borderStyle: "round",
+        borderColor: variants[variant].footerBorder,
+        paddingX: 1,
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "space-between",
       }),
       primaryText: (): TextProps => ({
         color: variants[variant].primary,
