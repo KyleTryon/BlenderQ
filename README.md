@@ -13,6 +13,10 @@ BlenderQ is a terminal UI (TUI) tool for managing a queue of local Blender rende
 - Queue and render multiple `.blend` files
 - Simple navigation and status tracking
 
+## Prerequisites
+- Node.js (v20+)
+- [Nerd Fonts](https://www.nerdfonts.com/) (for the icons)
+
 ## Why Node.js instead of Python?
 
 I’m more comfortable working in TypeScript, and it let me build something functional and maintainable faster than if I had done it in Python. I might eventually port it to Python to tie into Blender more directly, and likely use less resources.
