@@ -6,6 +6,7 @@
         "moduleResolution": "nodenext",
         "lib": ["es2022", "dom"], //  Include "dom" in "lib" for React
         "outDir": "./dist",
+        "rootDir": "./src",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
 
@@ -30,7 +31,11 @@
         /* Module Resolution Options */
         "baseUrl": "./src",
         "paths": {
-            "*": ["*"]
+            "components/*": ["components/*"],
+            "layouts/*": ["layouts/*"],
+            "screens/*": ["screens/*"],
+            "theme/*": ["theme/*"],
+            "utils/*": ["utils/*"]
         },
         "resolveJsonModule": true,
 

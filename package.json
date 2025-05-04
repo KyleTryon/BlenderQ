@@ -9,7 +9,7 @@
     },
     "scripts": {
         "dev": "tsx src/app.tsx",
-        "build": "tsc",
+        "build": "tsc && tsc-alias",
         "start": "node dist/app.js",
         "fmt": "prettier --write .",
         "lint": "eslint . --ext .ts,.tsx --fix"
@@ -41,6 +41,7 @@
         "@typescript-eslint/parser": "^8.31.1",
         "eslint": "^9.26.0",
         "eslint-plugin-simple-import-sort": "^12.1.1",
-        "prettier": "3.5.3"
+        "prettier": "3.5.3",
+        "tsc-alias": "^1.8.15"
     }
 }
