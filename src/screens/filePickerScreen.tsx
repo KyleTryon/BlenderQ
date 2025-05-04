@@ -7,6 +7,7 @@ import os from 'os'
 import { ScreenComponent } from './types.js'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import { Command } from 'components/commandBar.js'
+import { Icons } from 'utils/icons.js'
 
 interface FilePickerScreenProps extends ScreenComponent {
     dir?: string
@@ -38,9 +39,9 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
             const stat = fs.statSync(fullPath)
             const isDir = stat.isDirectory()
             const label = isDir
-                ? `\uf07b ${entry}` // Nerd Font folder
+                ? `${Icons.folder.utf} ${entry}`
                 : entry.endsWith('.blend')
-                  ? `\ue766 ${entry}` // Nerd Font 3D file glyph
+                  ? `${Icons.blend.utf} ${entry}`
                   : entry
             return {
                 label,
