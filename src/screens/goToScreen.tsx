@@ -5,8 +5,7 @@ import { DefaultLayout } from 'layouts/defaultLayout.js'
 import { useState } from 'react'
 
 export const GoToScreen: React.FC<ScreenComponent> = ({ navigate }) => {
-
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState('')
 
     const handleSubmit = () => {
         console.log('Navigating to directory: ', value)

@@ -5,5 +5,5 @@ import { GoToScreen } from './goToScreen.js'
 export const Screens = {
     splash: SplashScreen,
     filePicker: FilePickerScreen,
-    goTo: GoToScreen
+    goTo: GoToScreen,
 }

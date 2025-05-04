@@ -68,9 +68,7 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
     }
 
     return (
-        <DefaultLayout
-            commands={[goToCommand]}
-        >
+        <DefaultLayout commands={[goToCommand]}>
             <Text>Select a file or folder in: {dir}</Text>
             <Box marginTop={1}>
                 <SelectInput items={files} onSelect={handleSelect} />
