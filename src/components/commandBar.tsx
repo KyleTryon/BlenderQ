@@ -1,11 +1,11 @@
-import { Box, Key, Text, useInput } from 'ink'
+import { Box, Text, useInput, Key } from 'ink'
 import React from 'react'
 import { Icons, ValidIcon } from 'utils/icons.js'
 
 import { useTheme } from '../theme/theme.js'
 
 type Command = {
-    input: ((key: Key) => boolean) | string
+    input: string | ((key: Key) => boolean)
     label: ValidIcon
     description: string
     action: () => void
@@ -43,7 +43,7 @@ const CommandBar: React.FC<Props> = ({ commands }) => {
 }
 
 const quitCommand: Command = {
-    input: 'q',
+    input: (key) => key.escape,
     label: Icons.quit.utf,
     description: 'Quit',
     action: () => process.exit(),

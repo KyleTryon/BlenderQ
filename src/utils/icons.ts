@@ -21,8 +21,8 @@ export const Icons: Record<string, Icon> = {
         emoji: '⏎',
     },
     quit: {
-        utf: '[q]',
-        emoji: '[q]',
+        utf: '\udb84\udeb7',
+        emoji: '␛',
     },
     goTo: {
         utf: '[g]',
