@@ -32,7 +32,7 @@ const CommandBar: React.FC<Props> = ({ commands }) => {
 
     return (
         <Box {...theme.styles.footer()}>
-            {commands.map(({ label, description,  }, idx) => (
+            {commands.map(({ label, description }, idx) => (
                 <Text key={idx}>
                     {label} {description}
                 </Text>
