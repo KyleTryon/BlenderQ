@@ -19,18 +19,18 @@ const routes: {
 
 export type RouteKey = keyof typeof routes
 
-export const AppRouter = () => {
+export const AppRouter = (route: RouteKey, params?: any) => {
     const [current, setCurrent] = useState<{
         route: RouteKey
-        props?: Record<string, unknown>
+        params?: Record<string, unknown>
     }>({
-        route: '/splash',
-        props: {},
+        route: route,
+        params: params ?? {},
     })
 
-    const navigate = (route: RouteKey, props?: Record<string, unknown>) => {
+    const navigate = (route: RouteKey, params?: Record<string, unknown>) => {
         if (routes[route]) {
-            setCurrent({ route, props })
+            setCurrent({ route, params: { ...current.params, ...params } })
         } else {
             throw new Error(`Route ${route} not found`)
         }
@@ -40,7 +40,7 @@ export const AppRouter = () => {
 
     return (
         <ThemeProvider variant={'normal'}>
-            <Screen navigate={navigate} {...(current.props ?? {})} />
+            <Screen navigate={navigate} {...(current.params ?? {})} />
         </ThemeProvider>
     )
 }
