@@ -69,7 +69,7 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
 
     return (
         <DefaultLayout commands={[goToCommand]}>
-            <Text>Select a file or folder in: {dir}</Text>
+            <Text>Locate blender files in: {dir}</Text>
             <Box marginTop={1}>
                 <SelectInput items={files} onSelect={handleSelect} />
             </Box>
