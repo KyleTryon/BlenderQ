@@ -6,10 +6,23 @@ import path from 'path'
 import os from 'os'
 import { ScreenComponent } from './types.js'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
+import { Command } from 'components/commandBar.js'
 
-const FilePickerScreen: React.FC<ScreenComponent> = ({ navigate }) => {
+interface FilePickerScreenProps extends ScreenComponent {
+    dir?: string
+}
+
+const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
     const [files, setFiles] = useState<{ label: string; value: string }[]>([])
-    const [dir, setDir] = useState(os.homedir())
+    const [dir, setDir] = useState(props.dir ?? os.homedir())
+
+    useEffect(() => {
+        if (props.dir) {
+            setDir(props.dir)
+        }
+    }, [props.dir])
+
+    console.log('dir: ', dir)
 
     useEffect(() => {
         const entries = fs.readdirSync(dir).filter((entry) => {
@@ -42,12 +55,22 @@ const FilePickerScreen: React.FC<ScreenComponent> = ({ navigate }) => {
         if (stat.isDirectory()) {
             setDir(item.value)
         } else {
-            navigate('/splash')
+            props.navigate('/splash')
         }
     }
 
+    const goToCommand: Command = {
+        key: 'g',
+        label: 'Go to directory',
+        action: () => {
+            props.navigate('/filePicker/goTo')
+        },
+    }
+
     return (
-        <DefaultLayout>
+        <DefaultLayout
+            commands={[goToCommand]}
+        >
             <Text>Select a file or folder in: {dir}</Text>
             <Box marginTop={1}>
                 <SelectInput items={files} onSelect={handleSelect} />

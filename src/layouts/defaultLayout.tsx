@@ -14,7 +14,7 @@ export const DefaultLayout: React.FC<DefaultLayoutProps> = ({
     return (
         <>
             <Box {...theme.styles.frame()}>{children}</Box>
-            <CommandBar commands={[quitCommand, ...(commands || [])]} />
+            <CommandBar commands={[quitCommand, ...(commands ?? [])]} />
         </>
     )
 }

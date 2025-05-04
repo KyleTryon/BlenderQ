@@ -58,7 +58,7 @@ export const themeFactory = (variant: Variant = 'normal') =>
                 paddingX: 1,
                 width: '100%',
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                gap: 3,
             }),
             primaryText: (): TextProps => ({
                 color: variants[variant].primary,
