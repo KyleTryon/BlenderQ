@@ -1,10 +1,12 @@
 import React from 'react'
-import { Box, Text, useInput } from 'ink'
+import { Box, Key, Text, useInput } from 'ink'
 import { useTheme } from '../theme/theme.js'
+import { Icons, ValidIcon } from 'utils/icons.js'
 
 type Command = {
-    key: string
-    label: string
+    input: ((key: Key) => boolean) | string
+    label: ValidIcon
+    description: string
     action: () => void
 }
 
@@ -15,10 +17,14 @@ type Props = {
 const CommandBar: React.FC<Props> = ({ commands }) => {
     const { theme } = useTheme()
 
-    useInput((input) => {
-        const matched = commands.find(
-            (cmd) => cmd.key.toLowerCase() === input.toLowerCase()
-        )
+    useInput((input, key) => {
+        const matched = commands.find((cmd) => {
+            if (typeof cmd.input === 'string') {
+                return cmd.input.toLowerCase() === input.toLowerCase()
+            } else {
+                return cmd.input(key)
+            }
+        })
         if (matched) {
             matched.action()
         }
@@ -26,9 +32,9 @@ const CommandBar: React.FC<Props> = ({ commands }) => {
 
     return (
         <Box {...theme.styles.footer()}>
-            {commands.map(({ key, label }, idx) => (
+            {commands.map(({ label, description,  }, idx) => (
                 <Text key={idx}>
-                    {key} {label}
+                    {label} {description}
                 </Text>
             ))}
         </Box>
@@ -36,8 +42,9 @@ const CommandBar: React.FC<Props> = ({ commands }) => {
 }
 
 const quitCommand: Command = {
-    key: 'q',
-    label: 'Quit',
+    input: 'q',
+    label: Icons.quit.utf,
+    description: 'Quit',
     action: () => process.exit(),
 }
 

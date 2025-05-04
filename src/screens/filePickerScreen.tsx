@@ -22,9 +22,6 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
             setDir(props.dir)
         }
     }, [props.dir])
-
-    console.log('dir: ', dir)
-
     useEffect(() => {
         const entries = fs.readdirSync(dir).filter((entry) => {
             const fullPath = path.join(dir, entry)
@@ -61,8 +58,9 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
     }
 
     const goToCommand: Command = {
-        key: 'g',
-        label: 'Go to directory',
+        input: 'g',
+        label: Icons.goTo.utf,
+        description: 'Go to a directory',
         action: () => {
             props.navigate('/filePicker/goTo')
         },

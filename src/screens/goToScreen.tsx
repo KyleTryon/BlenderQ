@@ -8,7 +8,6 @@ export const GoToScreen: React.FC<ScreenComponent> = ({ navigate }) => {
     const [value, setValue] = useState('')
 
     const handleSubmit = () => {
-        console.log('Navigating to directory: ', value)
         navigate('/filePicker', { dir: value })
     }
 

@@ -20,4 +20,14 @@ export const Icons: Record<string, Icon> = {
         utf: '\udb80\udf11',
         emoji: '⏎',
     },
+    quit: {
+        utf: '[q]',
+        emoji: '[q]',
+    },
+    goTo: {
+        utf: '[g]',
+        emoji: '[g]',
+    },
 }
+
+export type ValidIcon = keyof typeof Icons
