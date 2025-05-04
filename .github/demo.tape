@@ -1,14 +1,22 @@
 # Where should we write the GIF?
 Output .github/img/demo.gif
 
-# Set up a 1200x600 terminal with 46px font.
+Set FontFamily "MesloLGL Nerd Font"
+
 Set FontSize 18
-Set Width 1200
+Set Width 1800
 Set Height 650
 
 Type "pnpm start"
-Sleep 200ms
+Sleep 300ms
+Enter
+
+Sleep 4s
+Type "g"
+Sleep 2s
+Type "/Users/techsquidtv/Documents/BlenderQ
+Sleep 2s
 Enter
 
 # Admire the output for a bit.
-Sleep 6s
+Sleep 5s
