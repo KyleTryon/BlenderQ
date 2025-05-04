@@ -3,7 +3,7 @@ type Icon = {
     emoji: string
 }
 
-export const Icons: Record<string, Icon> = {
+const icons = {
     folder: {
         utf: '\uf07b',
         emoji: '📁',
@@ -28,6 +28,7 @@ export const Icons: Record<string, Icon> = {
         utf: '[g]',
         emoji: '[g]',
     },
-}
+} as const satisfies Record<string, Icon>
 
-export type ValidIcon = keyof typeof Icons
+export const Icons = icons;
+

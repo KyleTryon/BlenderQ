@@ -1,12 +1,12 @@
 import { Box, Text, useInput, Key } from 'ink'
 import React from 'react'
-import { Icons, ValidIcon } from 'utils/icons.js'
+import { Icons } from 'utils/icons.js'
 
 import { useTheme } from '../theme/theme.js'
 
 type Command = {
     input: string | ((key: Key) => boolean)
-    label: ValidIcon
+    label: string
     description: string
     action: () => void
 }

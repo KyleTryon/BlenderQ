@@ -39,7 +39,7 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
             const label = isDir
                 ? `${Icons.folder.utf} ${entry}`
                 : entry.endsWith('.blend')
-                  ? `${Icons.blend.utf} ${entry}`
+                  ? `${Icons.blenderFile.utf} ${entry}`
                   : entry
             return {
                 label,
