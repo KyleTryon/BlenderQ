@@ -1,7 +1,8 @@
-import React from 'react'
 import { Box, Key, Text, useInput } from 'ink'
-import { useTheme } from '../theme/theme.js'
+import React from 'react'
 import { Icons, ValidIcon } from 'utils/icons.js'
+
+import { useTheme } from '../theme/theme.js'
 
 type Command = {
     input: ((key: Key) => boolean) | string

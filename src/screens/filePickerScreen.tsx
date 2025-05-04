@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import { Command } from 'components/commandBar.js'
+import fs from 'fs'
 import { Box, Text } from 'ink'
 import SelectInput from 'ink-select-input'
-import fs from 'fs'
-import path from 'path'
-import os from 'os'
-import { ScreenComponent } from './types.js'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
-import { Command } from 'components/commandBar.js'
+import os from 'os'
+import path from 'path'
+import React, { useEffect, useState } from 'react'
 import { Icons } from 'utils/icons.js'
+
+import { ScreenComponent } from './types.js'
 
 interface FilePickerScreenProps extends ScreenComponent {
     dir?: string

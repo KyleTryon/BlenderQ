@@ -1,7 +1,8 @@
-import { render } from 'ink'
-import { AppRouter, RouteKey } from './router.js'
 import { Command as Commander } from 'commander'
+import { render } from 'ink'
+
 import pJSON from '../package.json' with { type: 'json' }
+import { AppRouter, RouteKey } from './router.js'
 
 const program = new Commander()
 program
@@ -13,7 +14,7 @@ program.parse(process.argv, { from: 'node' })
 const options = program.opts()
 
 let route: RouteKey = '/splash'
-let props: any = {}
+const props: any = {}
 
 switch (true) {
     case !!options.help:

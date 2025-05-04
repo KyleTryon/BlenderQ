@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
 import { Box, Text } from 'ink'
-import Gradient from 'ink-gradient'
-import { useTheme } from '../theme/theme.js'
 import BigText from 'ink-big-text'
+import Gradient from 'ink-gradient'
+import React, { useEffect, useState } from 'react'
+
+import { useTheme } from '../theme/theme.js'
 import { ScreenComponent } from './types.js'
 
 const SplashScreen: React.FC<ScreenComponent> = ({ navigate }) => {

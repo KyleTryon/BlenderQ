@@ -1,7 +1,8 @@
-import { Screens } from './screens/index.js'
 import { FC, useState } from 'react'
-import { ThemeProvider } from './theme/theme.js'
+
+import { Screens } from './screens/index.js'
 import { ScreenComponent } from './screens/types.js'
+import { ThemeProvider } from './theme/theme.js'
 
 type RouteMap = {
     '/splash': ScreenComponent
@@ -24,7 +25,7 @@ export const AppRouter = (route: RouteKey, params?: any) => {
         route: RouteKey
         params?: Record<string, unknown>
     }>({
-        route: route,
+        route,
         params: params ?? {},
     })
 

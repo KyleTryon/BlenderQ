@@ -1,4 +1,5 @@
 import { Box } from 'ink'
+
 import { Command, CommandBar, quitCommand } from '../components/commandBar.js'
 import { useTheme } from '../theme/theme.js'
 

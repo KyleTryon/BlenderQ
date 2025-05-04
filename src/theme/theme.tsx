@@ -1,6 +1,6 @@
-import React, { createContext, ReactNode, useContext } from 'react'
-import { BoxProps, TextProps } from 'ink'
 import { ComponentTheme } from '@inkjs/ui'
+import { BoxProps, TextProps } from 'ink'
+import React, { createContext, ReactNode, useContext } from 'react'
 
 type Color =
     | 'black'
