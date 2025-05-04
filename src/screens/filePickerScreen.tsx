@@ -1,6 +1,6 @@
 import { Command } from 'components/commandBar.js'
 import fs from 'fs'
-import { Box, Text } from 'ink'
+import { Box, Text, useInput } from 'ink'
 import SelectInput from 'ink-select-input'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import os from 'os'
@@ -17,6 +17,7 @@ interface FilePickerScreenProps extends ScreenComponent {
 const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
     const [files, setFiles] = useState<{ label: string; value: string }[]>([])
     const [dir, setDir] = useState(props.dir ?? os.homedir())
+    const [notice, setNotice] = useState<string | null>(null)
 
     useEffect(() => {
         if (props.dir) {
@@ -53,10 +54,20 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
         const stat = fs.statSync(item.value)
         if (stat.isDirectory()) {
             setDir(item.value)
+            setNotice(null)
         } else {
-            props.navigate('/splash')
+            setNotice("That's a file — press Space to choose this folder")
         }
     }
+
+    useInput((input, key) => {
+        if (input === ' ') {
+            props.navigate('/splash', { dir })
+        } else if (key.backspace) {
+            setDir(path.dirname(dir))
+            setNotice(null)
+        }
+    })
 
     const goToCommand: Command = {
         input: 'g',
@@ -67,12 +78,40 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
         },
     }
 
+    const selectCommand: Command = {
+        input: ' ',
+        label: Icons.spaceKey.utf,
+        description: 'Select this folder',
+        action: () => {
+            const blendFiles = files.filter((file) =>
+                file.value.endsWith('.blend')
+            )
+            if (blendFiles.length > 0) {
+                props.navigate('/splash', { dir })
+            } else {
+                setNotice("No .blend files found in this folder")
+            }
+        },
+    }
+
+    const enterCommand: Command = {
+        input: (key) => key.return,
+        label: Icons.enterKey.utf,
+        description: 'Enter directory',
+        action: () => {},
+    }
+
     return (
-        <DefaultLayout commands={[goToCommand]}>
+        <DefaultLayout commands={[goToCommand, enterCommand, selectCommand]}>
             <Text>Locate blender files in: {dir}</Text>
             <Box marginTop={1}>
                 <SelectInput items={files} onSelect={handleSelect} />
             </Box>
+            {notice && (
+                <Box marginTop={1}>
+                    <Text color="yellow">{notice}</Text>
+                </Box>
+            )}
         </DefaultLayout>
     )
 }
