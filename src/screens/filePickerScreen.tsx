@@ -7,7 +7,7 @@ import os from 'os'
 import path from 'path'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from 'router.js'
-import { Icons } from 'utils/icons.js'
+import { useIcons } from 'utils/icons.js'
 
 import { ScreenComponent } from './types.js'
 
@@ -16,6 +16,7 @@ interface FilePickerScreenProps extends ScreenComponent {
 }
 
 const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
+    const icons = useIcons()
     const [files, setFiles] = useState<{ label: string; value: string }[]>([])
     const [dir, setDir] = useState(props.dir ?? os.homedir())
     const [notice, setNotice] = useState<string | null>(null)
@@ -39,9 +40,9 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
             const stat = fs.statSync(fullPath)
             const isDir = stat.isDirectory()
             const label = isDir
-                ? `${Icons.folder.utf} ${entry}`
+                ? `${icons.folder} ${entry}`
                 : entry.endsWith('.blend')
-                  ? `${Icons.blenderFile.utf} ${entry}`
+                  ? `${icons.blenderFile} ${entry}`
                   : entry
             return {
                 label,
@@ -63,7 +64,7 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
 
     const goToCommand: Command = {
         input: 'g',
-        label: Icons.goTo.utf,
+        label: icons.goTo,
         description: 'Go to a directory',
         action: () => {
             useNavigation().navigate('/filePicker/goTo', {})
@@ -72,7 +73,7 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
 
     const selectCommand: Command = {
         input: ' ',
-        label: Icons.spaceKey.utf,
+        label: icons.spaceKey,
         description: 'Select this folder',
         action: () => {
             const blendFiles = files
@@ -89,7 +90,7 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
 
     const enterCommand: Command = {
         input: (key) => key.return,
-        label: Icons.enterKey.utf,
+        label: icons.enterKey,
         description: 'Enter directory',
         action: () => {},
     }

@@ -2,6 +2,7 @@ import { Column, DataTable } from 'components/datatable.js'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import path from 'path'
 import React, { useEffect, useState } from 'react'
+import { useIcons } from 'utils/icons.js'
 
 import { ScreenComponent } from './types.js'
 
@@ -34,9 +35,10 @@ interface QueueScreenProps extends ScreenComponent {
 export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
     const [tasks, setTasks] = useState<QueueTask[]>([])
     const [tableData, setTableData] = useState<TableRow[]>([])
+    const icons = useIcons()
 
     const columns: Column<Record<string, any>>[] = [
-        { label: '○', dataKey: 'enabled', width: 2 },
+        { label: icons.checkBoxOpen, dataKey: 'enabled', width: 2 },
         { label: 'STATUS', dataKey: 'status', width: 11, color: 'cyan' },
         { label: 'NAME', dataKey: 'name', width: 18 },
         { label: 'PROGRESS', dataKey: 'progress', width: 18 },
@@ -66,7 +68,7 @@ export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
                 tasks.map(
                     ({ enabled, ...rest }): TableRow => ({
                         ...rest,
-                        enabled: enabled ? '◉' : '○',
+                        enabled: enabled ? icons.checkBoxFilled : icons.checkBoxOpen,
                     })
                 )
             )

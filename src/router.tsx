@@ -2,6 +2,7 @@ import { createContext, FC, useContext, useState } from 'react'
 
 import { Screens } from './screens/index.js'
 import { ThemeProvider } from './theme/theme.js'
+import { IconsProvider } from './utils/icons.js'
 
 export type RouteKey = '/splash' | '/filePicker' | '/filePicker/goTo' | '/queue'
 
@@ -54,9 +55,11 @@ export const AppRouter: FC<{
 
     return (
         <NavigationContext.Provider value={{ ...state, navigate }}>
-            <ThemeProvider variant="normal">
-                <Screen {...params} navigate={navigate} />
-            </ThemeProvider>
+            <IconsProvider style="utf">
+                <ThemeProvider variant="normal">
+                    <Screen {...params} navigate={navigate} />
+                </ThemeProvider>
+            </IconsProvider>
         </NavigationContext.Provider>
     )
 }
