@@ -6,6 +6,7 @@ import { DefaultLayout } from 'layouts/defaultLayout.js'
 import os from 'os'
 import path from 'path'
 import React, { useEffect, useState } from 'react'
+import { useNavigation } from 'router.js'
 import { Icons } from 'utils/icons.js'
 
 import { ScreenComponent } from './types.js'
@@ -65,7 +66,7 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
         label: Icons.goTo.utf,
         description: 'Go to a directory',
         action: () => {
-            props.navigate('/filePicker/goTo')
+            useNavigation().navigate('/filePicker/goTo', {})
         },
     }
 

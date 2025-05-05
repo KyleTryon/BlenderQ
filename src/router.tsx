@@ -1,18 +1,30 @@
-import { FC, useState } from 'react'
+import { createContext, FC, useContext, useState } from 'react'
 
 import { Screens } from './screens/index.js'
-import { ScreenComponent } from './screens/types.js'
 import { ThemeProvider } from './theme/theme.js'
 
-type RouteMap = {
+export type RouteKey = '/splash' | '/filePicker' | '/filePicker/goTo' | '/queue'
+
+export type RouteParams = {
     '/splash': {}
     '/filePicker': { dir?: string }
     '/filePicker/goTo': {}
     '/queue': { blendFiles: string[] }
 }
 
+type NavigationContextType = {
+    route: RouteKey
+    params: RouteParams[RouteKey]
+    navigate: <K extends RouteKey>(route: K, params: RouteParams[K]) => void
+}
+
+const NavigationContext = createContext<NavigationContextType | null>(null)
+export const useNavigation = () => useContext(NavigationContext)!
+
 const routes: {
-    [K in keyof RouteMap]: FC<RouteMap[K] & ScreenComponent<RouteMap[K]>>
+    [K in RouteKey]: FC<
+        RouteParams[K] & { navigate: NavigationContextType['navigate'] }
+    >
 } = {
     '/splash': Screens.splash,
     '/filePicker': Screens.filePicker,
@@ -20,30 +32,31 @@ const routes: {
     '/queue': Screens.queue,
 }
 
-export type RouteKey = keyof typeof routes
-
-export const AppRouter = (route: RouteKey, params?: RouteMap[RouteKey]) => {
-    const [current, setCurrent] = useState<{
+export const AppRouter: FC<{
+    route: RouteKey
+    params?: RouteParams[RouteKey]
+}> = ({ route, params }) => {
+    const [state, setState] = useState<{
         route: RouteKey
-        params: RouteMap[RouteKey]
+        params: RouteParams[RouteKey]
     }>({
         route,
-        params: params ?? ({} as RouteMap[RouteKey]),
+        params: (params ?? {}) as RouteParams[typeof route],
     })
 
-    const navigate = <K extends RouteKey>(route: K, params?: RouteMap[K]) => {
-        if (routes[route]) {
-            setCurrent({ route, params: { ...params } as RouteMap[K] })
-        } else {
-            throw new Error(`Route ${route} not found`)
-        }
+    const navigate = <K extends RouteKey>(route: K, params: RouteParams[K]) => {
+        setState({ route, params })
     }
 
-    const Screen = routes[current.route] as FC<any>
+    const Screen = routes[state.route] as FC<
+        RouteParams[typeof state.route] & { navigate: typeof navigate }
+    >
 
     return (
-        <ThemeProvider variant="normal">
-            <Screen navigate={navigate} {...current.params} />
-        </ThemeProvider>
+        <NavigationContext.Provider value={{ ...state, navigate }}>
+            <ThemeProvider variant="normal">
+                <Screen {...params} navigate={navigate} />
+            </ThemeProvider>
+        </NavigationContext.Provider>
     )
 }

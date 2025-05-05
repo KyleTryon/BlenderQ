@@ -2,14 +2,17 @@ import { TextInput } from '@inkjs/ui'
 import { Text } from 'ink'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import { useState } from 'react'
+import { useNavigation } from 'router.js'
 
 import { ScreenComponent } from './types.js'
 
-export const GoToScreen: React.FC<ScreenComponent> = ({ navigate }) => {
+export const GoToScreen: React.FC<ScreenComponent> = () => {
     const [value, setValue] = useState('')
 
     const handleSubmit = () => {
-        navigate('/filePicker', { dir: value })
+        useNavigation().navigate('/filePicker', {
+            dir: value,
+        })
     }
 
     return (

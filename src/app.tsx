@@ -14,25 +14,16 @@ program.parse(process.argv, { from: 'node' })
 const options = program.opts()
 
 let route: RouteKey = '/splash'
-const props: any = {}
+let props: any = {}
 
-switch (true) {
-    case !!options.help:
-        program.outputHelp()
-        process.exit(0)
-
-    case !!options.dir:
-        route = '/filePicker'
-        props.dir = options.dir
-        break
-
-    case !!options.skipSplash:
-        route = '/filePicker'
-        break
-
-    default:
-        route = '/splash'
+if (options.help) {
+    program.outputHelp()
+    process.exit(0)
+} else if (options.dir) {
+    route = '/filePicker'
+    props = { dir: options.dir }
+} else if (options.skipSplash) {
+    route = '/filePicker'
 }
 
-const EntryPoint = () => AppRouter(route, props)
-render(<EntryPoint />)
+render(<AppRouter route={route} params={props} />)

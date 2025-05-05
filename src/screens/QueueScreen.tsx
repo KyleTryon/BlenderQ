@@ -27,7 +27,7 @@ type TableRow = Omit<QueueTask, 'blendFile' | 'enabled'> & {
     enabled: string
 }
 
-interface QueueScreenProps extends ScreenComponent<{ blendFiles: string[] }> {
+interface QueueScreenProps extends ScreenComponent {
     blendFiles: string[]
 }
 

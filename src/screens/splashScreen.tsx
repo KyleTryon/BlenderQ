@@ -2,13 +2,15 @@ import { Box, Text } from 'ink'
 import BigText from 'ink-big-text'
 import Gradient from 'ink-gradient'
 import React, { useEffect, useState } from 'react'
+import { useNavigation } from 'router.js'
 
 import { useTheme } from '../theme/theme.js'
 import { ScreenComponent } from './types.js'
 
-const SplashScreen: React.FC<ScreenComponent> = ({ navigate }) => {
+const SplashScreen: React.FC<ScreenComponent> = () => {
     const { theme } = useTheme()
     const [seconds, setSeconds] = useState(1)
+    const { navigate } = useNavigation()
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -19,7 +21,7 @@ const SplashScreen: React.FC<ScreenComponent> = ({ navigate }) => {
 
     useEffect(() => {
         if (seconds <= 0) {
-            navigate('/filePicker')
+            navigate('/filePicker', {})
         }
     }, [seconds])
 

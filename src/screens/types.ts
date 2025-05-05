@@ -1,5 +1,5 @@
-import { RouteKey } from '../router.js'
+import { RouteKey, RouteParams } from '../router.js'
 
-export interface ScreenComponent<T = {}> {
-    navigate: (route: RouteKey, params?: T) => void
+export interface ScreenComponent {
+    navigate: <K extends RouteKey>(route: K, params: RouteParams[K]) => void
 }
