@@ -51,6 +51,7 @@ export const themeFactory = (variant: Variant = 'normal') =>
                 width: '100%',
                 height: '100%',
                 flexDirection: 'column',
+                flexGrow: 1,
             }),
             footer: (): BoxProps => ({
                 borderStyle: 'round',

@@ -5,43 +5,45 @@ import { ScreenComponent } from './screens/types.js'
 import { ThemeProvider } from './theme/theme.js'
 
 type RouteMap = {
-    '/splash': ScreenComponent
-    '/filePicker': ScreenComponent & { dir?: string }
-    '/filePicker/goTo': ScreenComponent
+    '/splash': {}
+    '/filePicker': { dir?: string }
+    '/filePicker/goTo': {}
+    '/queue': { blendFiles: string[] }
 }
 
 const routes: {
-    [K in keyof RouteMap]: FC<RouteMap[K]>
+    [K in keyof RouteMap]: FC<RouteMap[K] & ScreenComponent<RouteMap[K]>>
 } = {
     '/splash': Screens.splash,
     '/filePicker': Screens.filePicker,
     '/filePicker/goTo': Screens.goTo,
+    '/queue': Screens.queue,
 }
 
 export type RouteKey = keyof typeof routes
 
-export const AppRouter = (route: RouteKey, params?: any) => {
+export const AppRouter = (route: RouteKey, params?: RouteMap[RouteKey]) => {
     const [current, setCurrent] = useState<{
         route: RouteKey
-        params?: Record<string, unknown>
+        params: RouteMap[RouteKey]
     }>({
         route,
-        params: params ?? {},
+        params: params ?? {} as RouteMap[RouteKey],
     })
 
-    const navigate = (route: RouteKey, params?: Record<string, unknown>) => {
+    const navigate = <K extends RouteKey>(route: K, params?: RouteMap[K]) => {
         if (routes[route]) {
-            setCurrent({ route, params: { ...current.params, ...params } })
+            setCurrent({ route, params: { ...params } as RouteMap[K] })
         } else {
             throw new Error(`Route ${route} not found`)
         }
     }
 
-    const Screen = routes[current.route]
+    const Screen = routes[current.route] as FC<any>
 
     return (
-        <ThemeProvider variant={'normal'}>
-            <Screen navigate={navigate} {...(current.params ?? {})} />
+        <ThemeProvider variant="normal">
+            <Screen navigate={navigate} {...current.params} />
         </ThemeProvider>
     )
 }

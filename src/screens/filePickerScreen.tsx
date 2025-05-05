@@ -60,15 +60,6 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
         }
     }
 
-    useInput((input, key) => {
-        if (input === ' ') {
-            props.navigate('/splash', { dir })
-        } else if (key.backspace) {
-            setDir(path.dirname(dir))
-            setNotice(null)
-        }
-    })
-
     const goToCommand: Command = {
         input: 'g',
         label: Icons.goTo.utf,
@@ -85,9 +76,10 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
         action: () => {
             const blendFiles = files.filter((file) =>
                 file.value.endsWith('.blend')
-            )
+            ).map((file) => file.value)
+
             if (blendFiles.length > 0) {
-                props.navigate('/splash', { dir })
+                props.navigate('/queue', { blendFiles })
             } else {
                 setNotice("No .blend files found in this folder")
             }
