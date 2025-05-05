@@ -5,10 +5,13 @@ import { useState } from 'react'
 import { useNavigation } from 'router.js'
 
 import { ScreenComponent } from './types.js'
+import { Command } from 'components/commandBar.js'
+import { useIcons } from 'utils/icons.js'
 
 export const GoToScreen: React.FC<ScreenComponent> = () => {
     const navigate = useNavigation()
     const [value, setValue] = useState('')
+    const icons = useIcons()
 
     const handleSubmit = () => {
         navigate.navigate('/filePicker', {
@@ -16,8 +19,15 @@ export const GoToScreen: React.FC<ScreenComponent> = () => {
         })
     }
 
+    const enterCommand: Command = {
+        input: (key) => key.return,
+        label: icons.enterKey,
+        description: 'Enter directory',
+        action: () => {},
+    }
+
     return (
-        <DefaultLayout>
+        <DefaultLayout commands={[enterCommand]}>
             <Text>Enter a directory to navigate to:</Text>
             <TextInput onSubmit={handleSubmit} onChange={setValue} />
         </DefaultLayout>
