@@ -1,10 +1,10 @@
-import { Column, DataTable } from 'components/datatable.js'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import path from 'path'
 import React, { useEffect, useState } from 'react'
 import { useIcons } from 'utils/icons.js'
 
 import { ScreenComponent } from './types.js'
+import { Column, DataTable } from 'components/dataTable.js'
 
 type QueueTaskStatus =
     | 'INITIALIZING'

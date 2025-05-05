@@ -1,6 +1,6 @@
 import { Box } from 'ink'
 
-import { Command, CommandBar, quitCommand } from '../components/commandBar.js'
+import { Command, CommandBar } from '../components/commandBar.js'
 import { useTheme } from '../theme/theme.js'
 
 type DefaultLayoutProps = {
@@ -15,7 +15,7 @@ export const DefaultLayout: React.FC<DefaultLayoutProps> = ({
     return (
         <>
             <Box {...theme.styles.frame()}>{children}</Box>
-            <CommandBar commands={[quitCommand, ...(commands ?? [])]} />
+            <CommandBar commands={[...(commands ?? [])]} />
         </>
     )
 }

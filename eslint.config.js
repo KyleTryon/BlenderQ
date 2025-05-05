@@ -1,6 +1,7 @@
 import eslintPluginTs from '@typescript-eslint/eslint-plugin'
 import parserTs from '@typescript-eslint/parser'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import caseSensitivePaths from 'eslint-plugin-case-sensitive-paths'
 
 export default [
     {
@@ -15,6 +16,7 @@ export default [
         plugins: {
             '@typescript-eslint': eslintPluginTs,
             'simple-import-sort': simpleImportSort,
+            'case-sensitive-paths': caseSensitivePaths,
         },
         rules: {
             '@typescript-eslint/no-unused-vars': [
@@ -26,6 +28,7 @@ export default [
             'object-shorthand': ['warn', 'always'],
             'simple-import-sort/imports': 'error',
             'simple-import-sort/exports': 'error',
+            'case-sensitive-paths/case-sensitive-paths': 'error',
         },
     },
 ]

@@ -7,10 +7,11 @@ import { useNavigation } from 'router.js'
 import { ScreenComponent } from './types.js'
 
 export const GoToScreen: React.FC<ScreenComponent> = () => {
+    const navigate = useNavigation()
     const [value, setValue] = useState('')
 
     const handleSubmit = () => {
-        useNavigation().navigate('/filePicker', {
+        navigate.navigate('/filePicker', {
             dir: value,
         })
     }
