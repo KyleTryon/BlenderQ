@@ -30,5 +30,4 @@ const icons = {
     },
 } as const satisfies Record<string, Icon>
 
-export const Icons = icons;
-
+export const Icons = icons

@@ -14,7 +14,7 @@ export default [
         },
         plugins: {
             '@typescript-eslint': eslintPluginTs,
-            'simple-import-sort': simpleImportSort
+            'simple-import-sort': simpleImportSort,
         },
         rules: {
             '@typescript-eslint/no-unused-vars': [
@@ -25,7 +25,7 @@ export default [
             'no-multi-spaces': 'warn',
             'object-shorthand': ['warn', 'always'],
             'simple-import-sort/imports': 'error',
-            'simple-import-sort/exports': 'error'
+            'simple-import-sort/exports': 'error',
         },
     },
 ]

@@ -1,4 +1,4 @@
-import { Box, Text, useInput, Key } from 'ink'
+import { Box, Key, Text, useInput } from 'ink'
 import React from 'react'
 import { Icons } from 'utils/icons.js'
 

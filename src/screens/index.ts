@@ -7,5 +7,5 @@ export const Screens = {
     splash: SplashScreen,
     filePicker: FilePickerScreen,
     goTo: GoToScreen,
-    queue: QueueScreen
+    queue: QueueScreen,
 }

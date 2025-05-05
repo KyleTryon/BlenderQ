@@ -14,6 +14,7 @@ BlenderQ is a terminal UI (TUI) tool for managing a queue of local Blender rende
 - Simple navigation and status tracking
 
 ## Prerequisites
+
 - Node.js (v20+)
 - [Nerd Fonts](https://www.nerdfonts.com/) (for the icons)
 

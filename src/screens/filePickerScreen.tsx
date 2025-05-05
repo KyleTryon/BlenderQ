@@ -1,6 +1,6 @@
 import { Command } from 'components/commandBar.js'
 import fs from 'fs'
-import { Box, Text, useInput } from 'ink'
+import { Box, Text } from 'ink'
 import SelectInput from 'ink-select-input'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import os from 'os'
@@ -74,14 +74,14 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
         label: Icons.spaceKey.utf,
         description: 'Select this folder',
         action: () => {
-            const blendFiles = files.filter((file) =>
-                file.value.endsWith('.blend')
-            ).map((file) => file.value)
+            const blendFiles = files
+                .filter((file) => file.value.endsWith('.blend'))
+                .map((file) => file.value)
 
             if (blendFiles.length > 0) {
                 props.navigate('/queue', { blendFiles })
             } else {
-                setNotice("No .blend files found in this folder")
+                setNotice('No .blend files found in this folder')
             }
         },
     }

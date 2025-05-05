@@ -28,7 +28,7 @@ export const AppRouter = (route: RouteKey, params?: RouteMap[RouteKey]) => {
         params: RouteMap[RouteKey]
     }>({
         route,
-        params: params ?? {} as RouteMap[RouteKey],
+        params: params ?? ({} as RouteMap[RouteKey]),
     })
 
     const navigate = <K extends RouteKey>(route: K, params?: RouteMap[K]) => {

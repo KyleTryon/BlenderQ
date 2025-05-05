@@ -1,8 +1,8 @@
-import path from "path";
-import { GetBlenderPath } from "./utils.js";
-import { execFile } from "child_process";
-import { promisify } from "util";
+import { execFile } from 'child_process'
+import path from 'path'
+import { promisify } from 'util'
 
+import { GetBlenderPath } from './utils.js'
 
 type BlenderTask = {
     outputFile: string
@@ -11,21 +11,21 @@ type BlenderTask = {
 
 const scripts = {
     taskProbe: path.resolve(__dirname, '/python/taskProbe.py'),
-} as const;
+} as const
 
-export const BLENDER_EXEC = await GetBlenderPath();
-const execFileAsync = promisify(execFile);
+export const BLENDER_EXEC = await GetBlenderPath()
+const execFileAsync = promisify(execFile)
 
 export const GetTaskProbeData = async (file: string): Promise<BlenderTask> => {
     const { stdout } = await execFileAsync(
         BLENDER_EXEC,
         ['-b', file, '--factory-startup', '--python', scripts.taskProbe],
         { maxBuffer: 1 << 20 }
-      );
-    
-      const info = JSON.parse(stdout.trim());
-      return {
+    )
+
+    const info = JSON.parse(stdout.trim())
+    return {
         outputFile: info.outputFile,
         frames: info.frames,
-      }
+    }
 }
