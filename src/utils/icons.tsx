@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode } from 'react'
+import React, { createContext, ReactNode, useContext } from 'react'
 
 type Icon = {
     utf: string
@@ -67,6 +67,7 @@ export const IconsProvider = ({
 
 export const useIcons = () => {
     const context = useContext(IconsContext)
-    if (!context) throw new Error('useIcons must be used within an IconsProvider')
+    if (!context)
+        throw new Error('useIcons must be used within an IconsProvider')
     return context
 }

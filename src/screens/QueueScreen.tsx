@@ -68,7 +68,9 @@ export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
                 tasks.map(
                     ({ enabled, ...rest }): TableRow => ({
                         ...rest,
-                        enabled: enabled ? icons.checkBoxFilled : icons.checkBoxOpen,
+                        enabled: enabled
+                            ? icons.checkBoxFilled
+                            : icons.checkBoxOpen,
                     })
                 )
             )
