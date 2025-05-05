@@ -1,6 +1,6 @@
 import { Box, Key, Text, useInput } from 'ink'
 import React from 'react'
-import { Icons } from 'utils/icons.js'
+import { useIcons } from 'utils/icons.js'
 
 import { useTheme } from '../theme/theme.js'
 
@@ -17,14 +17,17 @@ type Props = {
 
 const CommandBar: React.FC<Props> = ({ commands }) => {
     const { theme } = useTheme()
+    const icons = useIcons()
+    const allCommands = [quitCommand(icons), ...commands]
 
     useInput((input, key) => {
-        const matched = commands.find((cmd) => {
-            if (typeof cmd.input === 'string') {
-                return cmd.input.toLowerCase() === input.toLowerCase()
-            } else {
+        const matched = allCommands.find((cmd) => {
+            if (typeof cmd.input === 'function') {
                 return cmd.input(key)
+            } else if (typeof cmd.input === 'string') {
+                return cmd.input.toLowerCase() === input.toLowerCase()
             }
+            return false
         })
         if (matched) {
             matched.action()
@@ -33,7 +36,7 @@ const CommandBar: React.FC<Props> = ({ commands }) => {
 
     return (
         <Box {...theme.styles.footer()}>
-            {commands.map(({ label, description }, idx) => (
+            {allCommands.map(({ label, description }, idx) => (
                 <Text key={idx}>
                     {label} {description}
                 </Text>
@@ -42,12 +45,12 @@ const CommandBar: React.FC<Props> = ({ commands }) => {
     )
 }
 
-const quitCommand: Command = {
+const quitCommand = (icons: ReturnType<typeof useIcons>): Command => ({
     input: (key) => key.escape,
-    label: Icons.quit.utf,
+    label: icons.quit,
     description: 'Quit',
     action: () => process.exit(),
-}
+})
 
 export { CommandBar, quitCommand }
 export type { Command }

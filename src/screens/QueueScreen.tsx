@@ -47,6 +47,8 @@ export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
     ]
 
     useEffect(() => {
+        if (!Array.isArray(blendFiles)) return
+    
         const newTasks = blendFiles.map(
             (blendFile): QueueTask => ({
                 enabled: true,

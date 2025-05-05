@@ -57,7 +57,7 @@ export const AppRouter: FC<{
         <NavigationContext.Provider value={{ ...state, navigate }}>
             <IconsProvider style="utf">
                 <ThemeProvider variant="normal">
-                    <Screen {...params} navigate={navigate} />
+                    <Screen {...state.params} navigate={navigate} />
                 </ThemeProvider>
             </IconsProvider>
         </NavigationContext.Provider>
