@@ -1,10 +1,13 @@
-import * as fs from 'fs';
-import { BlenderTask } from "./types.js"
-import { scripts } from "./python.js"
-import { execFileAsync } from "./utils.js"
+import * as fs from 'fs'
 
+import { scripts } from './python.js'
+import { BlenderTask } from './types.js'
+import { execFileAsync } from './utils.js'
 
-export const getTaskProbeData = async (blenderExec: string, file: string): Promise<BlenderTask> => {
+export const getTaskProbeData = async (
+    blenderExec: string,
+    file: string
+): Promise<BlenderTask> => {
     if (!fs.existsSync(scripts.taskProbe)) {
         console.error(
             '[getTaskProbeData] taskProbe.py not found at',
@@ -31,11 +34,7 @@ export const getTaskProbeData = async (blenderExec: string, file: string): Promi
             '[getTaskProbeData] execFileAsync failed – exit code',
             err?.code,
             '\nStderr tail:\n',
-            stderr
-                .trim()
-                .split('\n')
-                .slice(-20)
-                .join('\n')
+            stderr.trim().split('\n').slice(-20).join('\n')
         )
         throw err
     }

@@ -1,12 +1,12 @@
 import { TextInput } from '@inkjs/ui'
+import { Command } from 'components/commandBar.js'
 import { Text } from 'ink'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import { useState } from 'react'
 import { useNavigation } from 'router.js'
+import { useIcons } from 'utils/icons.js'
 
 import { ScreenComponent } from './types.js'
-import { Command } from 'components/commandBar.js'
-import { useIcons } from 'utils/icons.js'
 
 export const GoToScreen: React.FC<ScreenComponent> = () => {
     const navigate = useNavigation()
