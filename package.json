@@ -9,7 +9,7 @@
     },
     "scripts": {
         "dev": "tsx src/app.tsx",
-        "build": "tsc && tsc-alias",
+        "build": "tsc && tsc-alias && cp -R ./src/blender/python ./dist/blender/",
         "start": "node dist/app.js",
         "fmt": "prettier --write .",
         "lint": "eslint . --ext .ts,.tsx --fix"

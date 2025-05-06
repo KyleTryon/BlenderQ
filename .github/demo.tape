@@ -13,13 +13,13 @@ Enter
 
 Sleep 4s
 Type "g"
-Sleep 3s
+Sleep 2s
 Type "/Users/techsquidtv/Documents/BlenderQ
-Sleep 3s
+Sleep 2s
 Enter
 
 Sleep 3s
 Type " "
 
 # Admire the output for a bit.
-Sleep 6s
+Sleep 8s
