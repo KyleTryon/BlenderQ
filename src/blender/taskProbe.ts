@@ -10,10 +10,10 @@ export const getTaskProbeData = async (
 ): Promise<BlenderTask> => {
     if (!fs.existsSync(scripts.taskProbe)) {
         console.error(
-            '[getTaskProbeData] taskProbe.py not found at',
+            '[getTaskProbeData] task_probe.py not found at',
             scripts.taskProbe
         )
-        throw new Error('[getTaskProbeData] taskProbe.py not found')
+        throw new Error('[getTaskProbeData] task_probe.py not found')
     }
 
     let stdout: string
