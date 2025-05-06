@@ -5,6 +5,7 @@ import { useIcons } from 'utils/icons.js'
 
 import { ScreenComponent } from './types.js'
 import { Column, DataTable } from 'components/dataTable.js'
+import { GetTaskProbeData } from 'blender/index.js'
 
 type QueueTaskStatus =
     | 'INITIALIZING'
@@ -32,37 +33,72 @@ interface QueueScreenProps extends ScreenComponent {
     blendFiles: string[]
 }
 
-export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
+const useTaskQueue = (blendFiles: string[]): QueueTask[] => {
     const [tasks, setTasks] = useState<QueueTask[]>([])
+
+    useEffect(() => {
+        if (!Array.isArray(blendFiles)) return
+
+        const newTasks: QueueTask[] = blendFiles.map((blendFile) => ({
+            enabled: true,
+            name: path.basename(blendFile),
+            status: 'INITIALIZING',
+            progress: 0,
+            time: '00:00',
+            blendFile,
+            outputFile: '',
+            frames: 0,
+        }))
+
+        setTasks(newTasks)
+
+        const loadTaskData = async () => {
+            for (let i = 0; i < newTasks.length; i++) {
+                const task = newTasks[i]
+                try {
+                    const { outputFile, frames } = await GetTaskProbeData(task.blendFile)
+
+                    newTasks[i] = {
+                        ...task,
+                        status: 'QUEUED',
+                        outputFile,
+                        frames,
+                    }
+
+                    setTasks([...newTasks])
+                } catch (e) {
+                    console.error('[QueueScreen] Probe failed –', task.name, e)
+                    newTasks[i] = {
+                        ...task,
+                        status: 'FAILED',
+                        outputFile: '',
+                        frames: 0,
+                    }
+
+                    setTasks([...newTasks])
+                }
+            }
+        }
+
+        loadTaskData()
+    }, [blendFiles])
+
+    return tasks
+}
+
+export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
+    const tasks = useTaskQueue(blendFiles)
     const [tableData, setTableData] = useState<TableRow[]>([])
     const icons = useIcons()
 
     const columns: Column<Record<string, any>>[] = [
-        { label: icons.checkBoxOpen, dataKey: 'enabled', width: 2 },
+        { label: icons.checkBoxOpen, dataKey: 'enabled', width: 4 },
         { label: 'STATUS', dataKey: 'status', width: 11, color: 'cyan' },
         { label: 'NAME', dataKey: 'name', width: 18 },
         { label: 'PROGRESS', dataKey: 'progress', width: 18 },
         { label: 'TIME', dataKey: 'time', width: 6 },
         { label: 'FRAMES', dataKey: 'frames', width: 7 },
     ]
-
-    useEffect(() => {
-        if (!Array.isArray(blendFiles)) return
-    
-        const newTasks = blendFiles.map(
-            (blendFile): QueueTask => ({
-                enabled: true,
-                name: path.basename(blendFile),
-                status: 'INITIALIZING',
-                progress: 0,
-                time: '00:00',
-                blendFile,
-                outputFile: '',
-                frames: 0,
-            })
-        )
-        setTasks(newTasks)
-    }, [blendFiles])
 
     useEffect(() => {
         const interval = setInterval(() => {
