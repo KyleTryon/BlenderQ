@@ -42,7 +42,7 @@ const useTaskQueue = (blendFiles: string[]): QueueTask[] => {
         // 1.  Initialise every task as "INITIALIZING"
         const initial: QueueTask[] = blendFiles.map((blendFile) => ({
             enabled: true,
-            name: path.basename(blendFile),
+            name: path.basename(blendFile).split('.')[0],
             status: 'INITIALIZING',
             progress: 0,
             time: '00:00',
