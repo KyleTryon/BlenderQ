@@ -1,4 +1,5 @@
 import { GetTaskProbeData } from 'blender/index.js'
+import { Command } from 'components/commandBar.js'
 import { Column, DataTable } from 'components/dataTable.js'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import path from 'path'
@@ -123,8 +124,22 @@ export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
         [tasks, icons]
     )
 
+    const startCommand: Command = {
+        input: 's',
+        label: '[s]',
+        description: 'Start (all)}',
+        action: () => {},
+    }
+
+    const editCommand: Command = {
+        input: 'e',
+        label: '[e]',
+        description: 'Edit output (selected)',
+        action: () => {},
+    }
+
     return (
-        <DefaultLayout>
+        <DefaultLayout commands={[startCommand, editCommand]}>
             <DataTable
                 data={tableData}
                 columns={columns}
