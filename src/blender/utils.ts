@@ -3,11 +3,15 @@ import * as path from 'path';
 import * as os from 'os';
 import { promisify } from 'util';
 import { exec } from 'child_process';
+import { execFile } from 'child_process'
 
 const execPromise = promisify(exec);
 const fsAccess = promisify(fs.access);
 const fsReaddir = promisify(fs.readdir);
 const fsStat = promisify(fs.stat);
+
+export const execFileAsync = promisify(execFile)
+export const __dirname = path.dirname(new URL(import.meta.url).pathname)
 
 /**
  * Finds the path to the Blender executable across different operating systems.
