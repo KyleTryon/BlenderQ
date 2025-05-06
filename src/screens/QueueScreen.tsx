@@ -99,6 +99,8 @@ export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
     const tasks = useTaskQueue(blendFiles)
     const icons = useIcons()
 
+    const [selectedRow, setSelectedRow] = useState(0)
+
     const columns: Column<Record<string, any>>[] = [
         { label: icons.checkBoxOpen, dataKey: 'enabled', width: 4 },
         { label: 'STATUS', dataKey: 'status', width: 11, color: 'cyan' },
@@ -123,7 +125,12 @@ export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
 
     return (
         <DefaultLayout>
-            <DataTable data={tableData} columns={columns} />
+            <DataTable
+                data={tableData}
+                columns={columns}
+                selected={selectedRow}
+                onSelect={setSelectedRow}
+            />
         </DefaultLayout>
     )
 }
