@@ -1,6 +1,6 @@
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import path from 'path'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useIcons } from 'utils/icons.js'
 
 import { ScreenComponent } from './types.js'
@@ -39,7 +39,8 @@ const useTaskQueue = (blendFiles: string[]): QueueTask[] => {
     useEffect(() => {
         if (!Array.isArray(blendFiles)) return
 
-        const newTasks: QueueTask[] = blendFiles.map((blendFile) => ({
+        // 1.  Initialise every task as "INITIALIZING"
+        const initial: QueueTask[] = blendFiles.map((blendFile) => ({
             enabled: true,
             name: path.basename(blendFile),
             status: 'INITIALIZING',
@@ -49,38 +50,46 @@ const useTaskQueue = (blendFiles: string[]): QueueTask[] => {
             outputFile: '',
             frames: 0,
         }))
+        setTasks(initial)
 
-        setTasks(newTasks)
-
-        const loadTaskData = async () => {
-            for (let i = 0; i < newTasks.length; i++) {
-                const task = newTasks[i]
+        // 2.  Probe sequentially so the UI updates one at a time
+        const probeSequentially = async () => {
+            for (const blendFile of blendFiles) {
                 try {
-                    const { outputFile, frames } = await GetTaskProbeData(task.blendFile)
+                    const { outputFile, frames } =
+                        await GetTaskProbeData(blendFile)
 
-                    newTasks[i] = {
-                        ...task,
-                        status: 'QUEUED',
-                        outputFile,
-                        frames,
-                    }
-
-                    setTasks([...newTasks])
+                    // mark as QUEUED
+                    setTasks((prev) =>
+                        prev.map((t) =>
+                            t.blendFile === blendFile
+                                ? {
+                                      ...t,
+                                      status: 'QUEUED',
+                                      outputFile,
+                                      frames,
+                                  }
+                                : t
+                        )
+                    )
                 } catch (e) {
-                    console.error('[QueueScreen] Probe failed –', task.name, e)
-                    newTasks[i] = {
-                        ...task,
-                        status: 'FAILED',
-                        outputFile: '',
-                        frames: 0,
-                    }
-
-                    setTasks([...newTasks])
+                    setTasks((prev) =>
+                        prev.map((t) =>
+                            t.blendFile === blendFile
+                                ? {
+                                      ...t,
+                                      status: 'FAILED',
+                                      outputFile: '',
+                                      frames: 0,
+                                  }
+                                : t
+                        )
+                    )
                 }
             }
         }
 
-        loadTaskData()
+        probeSequentially()
     }, [blendFiles])
 
     return tasks
@@ -88,7 +97,6 @@ const useTaskQueue = (blendFiles: string[]): QueueTask[] => {
 
 export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
     const tasks = useTaskQueue(blendFiles)
-    const [tableData, setTableData] = useState<TableRow[]>([])
     const icons = useIcons()
 
     const columns: Column<Record<string, any>>[] = [
@@ -100,22 +108,18 @@ export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
         { label: 'FRAMES', dataKey: 'frames', width: 7 },
     ]
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTableData(
-                tasks.map(
-                    ({ enabled, ...rest }): TableRow => ({
-                        ...rest,
-                        enabled: enabled
-                            ? icons.checkBoxFilled
-                            : icons.checkBoxOpen,
-                    })
-                )
-            )
-        }, 500)
-
-        return () => clearInterval(interval)
-    }, [tasks])
+    const tableData: TableRow[] = useMemo(
+        () =>
+            tasks.map(
+                ({ enabled, ...rest }): TableRow => ({
+                    ...rest,
+                    enabled: enabled
+                        ? icons.checkBoxFilled
+                        : icons.checkBoxOpen,
+                })
+            ),
+        [tasks, icons]
+    )
 
     return (
         <DefaultLayout>
