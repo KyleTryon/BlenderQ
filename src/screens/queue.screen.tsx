@@ -29,8 +29,18 @@ type TableRow = Omit<QueueTask, 'blendFile' | 'enabled'> & {
     enabled: string
 }
 
-const useTaskQueue = (blendFiles: string[]): QueueTask[] => {
-    const [tasks, setTasks] = useState<QueueTask[]>([])
+const useTaskQueue = (
+    blendFiles: string[]
+): [QueueTask[], (index: number) => void] => {
+    const [tasks, setTasks] = useState<QueueTask[]>([]);
+
+    // Toggle helper must live outside useEffect so we can return it
+    const toggleTaskEnabled = (index: number) =>
+        setTasks((prev) =>
+            prev.map((t, i) =>
+                i === index ? { ...t, enabled: !t.enabled } : t
+            )
+        );
 
     useEffect(() => {
         if (!Array.isArray(blendFiles)) return
@@ -88,7 +98,7 @@ const useTaskQueue = (blendFiles: string[]): QueueTask[] => {
         probeSequentially()
     }, [blendFiles])
 
-    return tasks
+    return [tasks, toggleTaskEnabled]
 }
 
 type Params = {
@@ -96,7 +106,7 @@ type Params = {
 }
 
 const QueueScreen: React.FC<Params> = ({ blendFiles }) => {
-    const tasks = useTaskQueue(blendFiles)
+    const [tasks, toggleTaskEnabled] = useTaskQueue(blendFiles)
     const icons = useIcons()
 
     const [selectedRow, setSelectedRow] = useState(0)
@@ -138,8 +148,17 @@ const QueueScreen: React.FC<Params> = ({ blendFiles }) => {
         action: () => {},
     }
 
+    const toggleCommand: Command = {
+        input: ' ',
+        label: icons.spaceKey,
+        description: 'Toggle (selected)',
+        action: () => {
+            toggleTaskEnabled(selectedRow)
+        },
+    }
+
     return (
-        <DefaultLayout commands={[startCommand, editCommand]}>
+        <DefaultLayout commands={[startCommand, editCommand, toggleCommand]}>
             <DataTable
                 data={tableData}
                 columns={columns}
