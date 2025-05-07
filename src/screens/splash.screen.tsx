@@ -1,13 +1,13 @@
 import { Box, Text } from 'ink'
 import BigText from 'ink-big-text'
 import Gradient from 'ink-gradient'
-import React, { useEffect, useState } from 'react'
-import { useNavigation } from 'router.js'
+import { useEffect, useState } from 'react'
+import { defineScreen } from 'router/defineScreen.js'
+import { useNavigation } from 'router/index.js'
 
 import { useTheme } from '../theme/theme.js'
-import { ScreenComponent } from './types.js'
 
-const SplashScreen: React.FC<ScreenComponent> = () => {
+const SplashScreen: React.FC = () => {
     const { theme } = useTheme()
     const [seconds, setSeconds] = useState(1)
     const { navigate } = useNavigation()
@@ -40,4 +40,4 @@ const SplashScreen: React.FC<ScreenComponent> = () => {
     )
 }
 
-export { SplashScreen }
+export default defineScreen('/splash', SplashScreen)

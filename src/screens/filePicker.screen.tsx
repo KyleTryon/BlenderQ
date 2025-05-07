@@ -5,37 +5,33 @@ import SelectInput from 'ink-select-input'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import os from 'os'
 import path from 'path'
-import React, { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
+import { defineScreen } from 'router/defineScreen.js'
+import { useNavigation } from 'router/index.js'
 import { useIcons } from 'utils/icons.js'
 
-import { ScreenComponent } from './types.js'
+type Params = { dir?: string }
 
-interface FilePickerScreenProps extends ScreenComponent {
-    dir?: string
-}
-
-const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
-    const [files, setFiles] = useState<{ label: string; value: string }[]>([])
-    const [dir, setDir] = useState(props.dir ?? os.homedir())
-    const [notice, setNotice] = useState<string | null>(null)
+const FilePickerScreen: FC<Params> = ({ dir: initialDir }) => {
+    const { navigate } = useNavigation()
     const icons = useIcons()
 
+    const [currentDir, setCurrentDir] = useState(initialDir ?? os.homedir())
+    const [files, setFiles] = useState<{ label: string; value: string }[]>([])
+    const [notice, setNotice] = useState<string | null>(null)
+
     useEffect(() => {
-        if (props.dir) {
-            setDir(props.dir)
-        }
-    }, [props.dir])
-    useEffect(() => {
-        const entries = fs.readdirSync(dir).filter((entry) => {
-            const fullPath = path.join(dir, entry)
+        const entries = fs.readdirSync(currentDir).filter((entry) => {
+            const fullPath = path.join(currentDir, entry)
             const stat = fs.statSync(fullPath)
             return (
                 (stat.isDirectory() && !entry.startsWith('.')) ||
                 entry.endsWith('.blend')
             )
         })
+
         const formatted = entries.map((entry) => {
-            const fullPath = path.join(dir, entry)
+            const fullPath = path.join(currentDir, entry)
             const stat = fs.statSync(fullPath)
             const isDir = stat.isDirectory()
             const label = isDir
@@ -43,18 +39,16 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
                 : entry.endsWith('.blend')
                   ? `${icons.blenderFile} ${entry}`
                   : entry
-            return {
-                label,
-                value: fullPath,
-            }
+            return { label, value: fullPath }
         })
+
         setFiles(formatted)
-    }, [dir])
+    }, [currentDir, icons])
 
     const handleSelect = (item: { label: string; value: string }) => {
         const stat = fs.statSync(item.value)
         if (stat.isDirectory()) {
-            setDir(item.value)
+            setCurrentDir(item.value)
             setNotice(null)
         } else {
             setNotice("That's a file — press Space to choose this folder")
@@ -65,9 +59,7 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
         input: 'g',
         label: icons.goTo,
         description: 'Go to a directory',
-        action: () => {
-            props.navigate('/filePicker/goTo', {})
-        },
+        action: () => navigate('/filePicker/goTo', {}),
     }
 
     const selectCommand: Command = {
@@ -80,7 +72,7 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
                 .map((file) => file.value)
 
             if (blendFiles.length > 0) {
-                props.navigate('/queue', { blendFiles })
+                navigate('/queue', { blendFiles })
             } else {
                 setNotice('No .blend files found in this folder')
             }
@@ -96,7 +88,7 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
 
     return (
         <DefaultLayout commands={[goToCommand, enterCommand, selectCommand]}>
-            <Text>Locate blender files in: {dir}</Text>
+            <Text>Locate blender files in: {currentDir}</Text>
             <Box marginTop={1}>
                 <SelectInput items={files} onSelect={handleSelect} />
             </Box>
@@ -109,4 +101,4 @@ const FilePickerScreen: React.FC<FilePickerScreenProps> = (props) => {
     )
 }
 
-export { FilePickerScreen }
+export default defineScreen('/filePicker', FilePickerScreen)

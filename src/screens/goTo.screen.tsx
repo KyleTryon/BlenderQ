@@ -3,12 +3,11 @@ import { Command } from 'components/commandBar.js'
 import { Text } from 'ink'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import { useState } from 'react'
-import { useNavigation } from 'router.js'
+import { defineScreen } from 'router/defineScreen.js'
+import { useNavigation } from 'router/index.js'
 import { useIcons } from 'utils/icons.js'
 
-import { ScreenComponent } from './types.js'
-
-export const GoToScreen: React.FC<ScreenComponent> = () => {
+const GoToScreen: React.FC = () => {
     const navigate = useNavigation()
     const [value, setValue] = useState('')
     const icons = useIcons()
@@ -33,3 +32,5 @@ export const GoToScreen: React.FC<ScreenComponent> = () => {
         </DefaultLayout>
     )
 }
+
+export default defineScreen('/filePicker/goTo', GoToScreen)

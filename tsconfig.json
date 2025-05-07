@@ -35,7 +35,8 @@
             "layouts/*": ["layouts/*"],
             "screens/*": ["screens/*"],
             "theme/*": ["theme/*"],
-            "utils/*": ["utils/*"]
+            "utils/*": ["utils/*"],
+            "router/*": ["router/*"]
         },
         "resolveJsonModule": true,
 

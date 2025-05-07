@@ -4,9 +4,8 @@ import { Column, DataTable } from 'components/dataTable.js'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import path from 'path'
 import React, { useEffect, useMemo, useState } from 'react'
+import { defineScreen } from 'router/defineScreen.js'
 import { useIcons } from 'utils/icons.js'
-
-import { ScreenComponent } from './types.js'
 
 type QueueTaskStatus =
     | 'INITIALIZING'
@@ -28,10 +27,6 @@ type QueueTask = {
 
 type TableRow = Omit<QueueTask, 'blendFile' | 'enabled'> & {
     enabled: string
-}
-
-interface QueueScreenProps extends ScreenComponent {
-    blendFiles: string[]
 }
 
 const useTaskQueue = (blendFiles: string[]): QueueTask[] => {
@@ -96,7 +91,11 @@ const useTaskQueue = (blendFiles: string[]): QueueTask[] => {
     return tasks
 }
 
-export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
+type Params = {
+    blendFiles: string[]
+}
+
+const QueueScreen: React.FC<Params> = ({ blendFiles }) => {
     const tasks = useTaskQueue(blendFiles)
     const icons = useIcons()
 
@@ -149,3 +148,5 @@ export const QueueScreen: React.FC<QueueScreenProps> = ({ blendFiles }) => {
         </DefaultLayout>
     )
 }
+
+export default defineScreen('/queue', QueueScreen)

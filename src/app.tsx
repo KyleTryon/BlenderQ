@@ -2,7 +2,7 @@ import { Command as Commander } from 'commander'
 import { render } from 'ink'
 
 import pJSON from '../package.json' with { type: 'json' }
-import { AppRouter, RouteKey } from './router.js'
+import { AppRouter, RouteKey } from './router/index.js'
 
 const program = new Commander()
 program
@@ -26,4 +26,4 @@ if (options.help) {
     route = '/filePicker'
 }
 
-render(<AppRouter route={route} params={props} />)
+render(<AppRouter initialRoute={'/splash'} initialParams={{}} />)
