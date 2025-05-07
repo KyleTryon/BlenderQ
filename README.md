@@ -21,13 +21,14 @@ BlenderQ is a terminal UI (TUI) tool for managing a queue of local Blender rende
 ## Usage
 
 ```
-Usage: app [options]
+Usage: program [options]
 
 Options:
-  -V, --version      output the version number
-  -z, --skip-splash  Skip splash screen
-  -d, --dir <dir>    Set the directory to start in
-  -h, --help         display help for command
+  -V, --version           output the version number
+  -z, --skip-splash       Skip splash screen
+  -d, --dir <dir>         Set the directory to start in
+  -b, --blend <blend...>  Set the blend files to open
+  -h, --help              display help for command
 
 ```
 
