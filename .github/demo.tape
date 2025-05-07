@@ -3,8 +3,8 @@ Output .github/img/demo.gif
 
 Set FontFamily "MesloLGL Nerd Font"
 
-Set FontSize 18
-Set Width 1800
+Set FontSize 20
+Set Width 1280
 Set Height 650
 
 Type "pnpm start"
