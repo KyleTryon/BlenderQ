@@ -11,12 +11,6 @@ const modules = import.meta.glob('./../screens/**/*.screen.tsx', {
 }) as Record<string, { default: { route: string; component: FC<any> } }>
 // DEBUG ────────────────────────────────────────────────────────────
 const modulePaths = Object.keys(modules)
-console.log(
-    'import.meta.glob matched',
-    modulePaths.length,
-    'screen modules:',
-    modulePaths
-)
 if (modulePaths.length === 0) {
     console.error(
         '⚠️  import.meta.glob matched zero .screen.tsx files ‑ check the glob pattern and Vite root.'
@@ -70,7 +64,6 @@ export const AppRouter: FC<{ initialRoute: RouteKey; initialParams: any }> = ({
     })
 
     const navigate: NavigateFn = useCallback((route, params) => {
-        console.log('🧭 navigate()', { route, params })
         set({ route, params })
     }, [])
 
