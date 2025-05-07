@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import { createContext, FC, useCallback, useContext, useState } from 'react'
-import { Icons, IconsProvider } from 'utils/icons.js'
+import { IconsProvider } from 'utils/icons.js'
 
 /**
  * 1.  Eager-import all *.screen.tsx files at startup
@@ -9,14 +9,13 @@ import { Icons, IconsProvider } from 'utils/icons.js'
 const modules = import.meta.glob('./../screens/**/*.screen.tsx', {
     eager: true,
 }) as Record<string, { default: { route: string; component: FC<any> } }>
-// DEBUG ────────────────────────────────────────────────────────────
+
 const modulePaths = Object.keys(modules)
 if (modulePaths.length === 0) {
     console.error(
         '⚠️  import.meta.glob matched zero .screen.tsx files ‑ check the glob pattern and Vite root.'
     )
 }
-// ──────────────────────────────────────────────────────────────────
 
 /**
  * 2.  Build a route → component map

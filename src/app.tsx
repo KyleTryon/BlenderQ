@@ -26,4 +26,4 @@ if (options.help) {
     route = '/filePicker'
 }
 
-render(<AppRouter initialRoute={'/splash'} initialParams={{}} />)
+render(<AppRouter initialRoute={route} initialParams={props} />)
