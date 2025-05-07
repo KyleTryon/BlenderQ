@@ -108,6 +108,7 @@ const QueueScreen: React.FC<Params> = ({ blendFiles }) => {
         { label: 'PROGRESS', dataKey: 'progress', width: 18 },
         { label: 'TIME', dataKey: 'time', width: 6 },
         { label: 'FRAMES', dataKey: 'frames', width: 7 },
+        { label: 'OUTPUT', dataKey: 'outputFile', width: 20 },
     ]
 
     const tableData: TableRow[] = useMemo(

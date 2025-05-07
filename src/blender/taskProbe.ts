@@ -61,7 +61,8 @@ export const getTaskProbeData = async (
     }
 
     return {
-        outputFile: info.outputFile,
-        frames: info.frames,
+        // Support both camelCase and snake_case from task_probe.py
+        outputFile: info.renderPath,
+        frames: info.frames ?? 0,
     }
 }
