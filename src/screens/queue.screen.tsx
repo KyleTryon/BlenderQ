@@ -137,7 +137,7 @@ const QueueScreen: React.FC<Params> = ({ blendFiles }) => {
     const startCommand: Command = {
         input: 's',
         label: '[s]',
-        description: 'Start (all)}',
+        description: 'Start (all)',
         action: () => {},
     }
 
