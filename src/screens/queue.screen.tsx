@@ -32,7 +32,7 @@ type TableRow = Omit<QueueTask, 'blendFile' | 'enabled'> & {
 const useTaskQueue = (
     blendFiles: string[]
 ): [QueueTask[], (index: number) => void] => {
-    const [tasks, setTasks] = useState<QueueTask[]>([]);
+    const [tasks, setTasks] = useState<QueueTask[]>([])
 
     // Toggle helper must live outside useEffect so we can return it
     const toggleTaskEnabled = (index: number) =>
@@ -40,7 +40,7 @@ const useTaskQueue = (
             prev.map((t, i) =>
                 i === index ? { ...t, enabled: !t.enabled } : t
             )
-        );
+        )
 
     useEffect(() => {
         if (!Array.isArray(blendFiles)) return
