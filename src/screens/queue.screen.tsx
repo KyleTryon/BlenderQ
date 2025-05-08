@@ -8,7 +8,7 @@ import React, { useMemo, useState } from 'react'
 import { defineScreen } from 'router/defineScreen.js'
 
 const InnerQueueScreen: React.FC = () => {
-    const { tasks, toggleTaskEnabled } = useQueueContext()
+    const { tasks, toggleTaskEnabled, startRenderAll } = useQueueContext()
     const icons = useIcons()
     const [selectedRow, setSelectedRow] = useState(0)
     const { navigate } = useNavigation()
@@ -18,9 +18,9 @@ const InnerQueueScreen: React.FC = () => {
             { label: icons.checkBoxOpen, dataKey: 'enabled', width: 4 },
             { label: 'STATUS', dataKey: 'status', width: 10, color: 'cyan' },
             { label: 'NAME', dataKey: 'name', width: 12 },
-            { label: 'PROGRESS', dataKey: 'progress', width: 18 },
+            { label: 'PROGRESS', dataKey: 'progress', width: 6 },
             { label: 'TIME', dataKey: 'time', width: 6 },
-            { label: 'FRAMES', dataKey: 'frames', width: 7 },
+            { label: 'FRAMES', dataKey: 'frames', width: 6 },
             { label: 'OUTPUT', dataKey: 'output', width: 32 },
         ],
         [icons]
@@ -48,7 +48,7 @@ const InnerQueueScreen: React.FC = () => {
                 input: 's',
                 label: '[s]',
                 description: 'Start (all)',
-                action: () => {},
+                action: startRenderAll,
             },
             {
                 input: 'e',
@@ -77,7 +77,7 @@ const InnerQueueScreen: React.FC = () => {
                 action: () => toggleTaskEnabled(selectedRow),
             },
         ],
-        [icons, selectedRow, toggleTaskEnabled]
+        [icons, selectedRow, toggleTaskEnabled, startRenderAll]
     )
 
     return (

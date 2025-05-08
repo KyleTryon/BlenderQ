@@ -1,3 +1,5 @@
+import { RunTaskRender } from 'blender/index.js'
+import { useRef } from 'react'
 import { GetTaskProbeData } from 'blender/index.js'
 import { BlenderTask } from 'blender/types.js'
 import path from 'path'
@@ -30,6 +32,7 @@ export type QueueContextType = {
     tasks: QueueTask[]
     toggleTaskEnabled: (index: number) => void
     setTaskOutput: (index: number, outputPath: string) => void
+    startRenderAll: () => void
 }
 
 export const QueueContext = createContext<QueueContextType | undefined>(
@@ -159,9 +162,57 @@ export const QueueProvider: FC<{
         )
     }, [])
 
+    // --------------- render queue ---------------
+    const isRenderingRef = useRef(false)
+
+    const startRenderAll = useCallback(async () => {
+        if (isRenderingRef.current) return
+        isRenderingRef.current = true
+
+        for (let i = 0; i < tasks.length; i++) {
+            const task = tasks[i]
+            if (!task.enabled || task.status !== 'QUEUED') continue
+
+            // mark as RUNNING and reset progress
+            setTasks(prev =>
+                prev.map((t, idx) =>
+                    idx === i ? { ...t, status: 'RUNNING', progress: 0 } : t
+                )
+            )
+
+            try {
+                await RunTaskRender(task.blendFile, task, (pct) => {
+                    setTasks(prev =>
+                        prev.map((t, idx) =>
+                            idx === i ? { ...t, progress: pct } : t
+                        )
+                    )
+                })
+
+                // mark as COMPLETED
+                setTasks(prev =>
+                    prev.map((t, idx) =>
+                        idx === i
+                            ? { ...t, status: 'COMPLETED', progress: 100 }
+                            : t
+                    )
+                )
+            } catch (err) {
+                // mark as FAILED
+                setTasks(prev =>
+                    prev.map((t, idx) =>
+                        idx === i ? { ...t, status: 'FAILED' } : t
+                    )
+                )
+            }
+        }
+
+        isRenderingRef.current = false
+    }, [tasks])
+
     return (
         <QueueContext.Provider
-            value={{ tasks, toggleTaskEnabled, setTaskOutput }}
+            value={{ tasks, toggleTaskEnabled, setTaskOutput, startRenderAll }}
         >
             {children}
         </QueueContext.Provider>
