@@ -1,6 +1,6 @@
 {
     "name": "blenderq",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "A TUI for managing a queue of local Blender rendering jobs.",
     "main": "src/app.tsx",
     "type": "module",
