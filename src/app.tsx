@@ -34,4 +34,9 @@ if (options.help) {
     route = '/filePicker'
 }
 
+// Clear the console
+process.stdout.write('\x1Bc')
+// Set the title
+process.title = `BlenderQ - ${pJSON.version}`
+
 render(<AppRouter initialRoute={route} initialParams={props} />)
