@@ -45,3 +45,17 @@ pnpm install
 pnpm build
 pnpm start
 ```
+
+## Example
+
+### Add a collection of .blend files to the queue
+
+```bash
+pnpm start --blend /path/to/file1.blend /path/to/file2.blend
+```
+
+### Manually search for .blend files from directory
+
+```bash
+pnpm start --dir /path/to/directory
+```

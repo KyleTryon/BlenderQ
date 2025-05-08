@@ -29,8 +29,10 @@ Sleep 3s
 Type "a"
 Sleep 2s
 Type "/tmp/${NAME}/cube####${EXT}"
-Sleep 2s
+Sleep 1s
 Enter
+Sleep 2s
+Type "s"
 
 # Admire the output for a bit.
-Sleep 8s
+Sleep 10s
