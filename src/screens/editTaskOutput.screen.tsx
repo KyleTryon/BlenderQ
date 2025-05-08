@@ -19,6 +19,7 @@ interface PathVariables {
     DATE_EX: string
     EPOCH: string
     TASK_INDEX: number
+    EXT: string
     [key: string]: string | number // Add this index signature
 }
 
@@ -32,14 +33,21 @@ const variableDefinitions: {
     DATE_EX: { description: 'The current date (ISO format).' },
     EPOCH: { description: 'The current Unix timestamp.' },
     TASK_INDEX: { description: 'The index of the task in the queue.' },
+    EXT: { description: 'The file extension of the output file.' },
 }
 
 const EditTaskOutputScreen: FC<Params> = ({ taskIndex }) => {
     const { navigate } = useNavigation()
     const icons = useIcons()
     const { setTaskOutput, tasks } = useQueueContext()
+    // If a single task is being edited, pre‑fill the existing output path.
+    // When editing all tasks (taskIndex === -1) or if the index is invalid, start with a blank value.
+    const outputFile =
+        taskIndex !== -1 && tasks[taskIndex]
+            ? `${tasks[taskIndex].renderPath ?? ''}${tasks[taskIndex].renderFilename ?? ''}${tasks[taskIndex].renderExtension ?? ''}`
+            : ''
 
-    const [value, setValue] = useState(tasks[taskIndex]?.outputFile ?? '')
+    const [value, setValue] = useState(outputFile ?? '')
 
     function resolveTemplate(
         template: string,
@@ -63,6 +71,7 @@ const EditTaskOutputScreen: FC<Params> = ({ taskIndex }) => {
             DATE_EX: new Date().toISOString(),
             EPOCH: Math.floor(Date.now() / 1000).toString(),
             TASK_INDEX: idx,
+            EXT: task.renderExtension ?? '',
         })
 
         if (taskIndex === -1) {

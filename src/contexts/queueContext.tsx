@@ -29,7 +29,7 @@ export type QueueTask = BlenderTask & {
 export type QueueContextType = {
     tasks: QueueTask[]
     toggleTaskEnabled: (index: number) => void
-    setTaskOutput: (index: number, outputFile: string) => void
+    setTaskOutput: (index: number, outputPath: string) => void
 }
 
 export const QueueContext = createContext<QueueContextType | undefined>(
@@ -121,11 +121,41 @@ export const QueueProvider: FC<{
         )
     }, [])
 
-    const setTaskOutput = useCallback((index: number, outputFile: string) => {
+    const setTaskOutput = useCallback((index: number, outputPath: string) => {
         setTasks((prev) =>
-            prev.map((task, i) =>
-                index === -1 || i === index ? { ...task, outputFile } : task
-            )
+            prev.map((task, i) => {
+                if (index !== -1 && i !== index) return task
+
+                // If the user ended the path with a trailing separator,
+                // treat it as “directory only” — no filename.
+                if (outputPath.trim().endsWith(path.sep)) {
+                    const cleanDir = outputPath.endsWith(path.sep)
+                        ? outputPath
+                        : outputPath + path.sep
+                    return {
+                        ...task,
+                        renderPath: cleanDir,
+                        renderFilename: '',
+                        renderExtension: '',
+                    }
+                }
+
+                // Otherwise parse path into dir / filename / ext
+                const parsed = path.parse(outputPath)
+
+                // Ensure renderPath ends with exactly one separator
+                const dirWithSep =
+                    parsed.dir && !parsed.dir.endsWith(path.sep)
+                        ? parsed.dir + path.sep
+                        : parsed.dir
+
+                return {
+                    ...task,
+                    renderPath: dirWithSep,
+                    renderFilename: parsed.name,
+                    renderExtension: parsed.ext || '',
+                }
+            })
         )
     }, [])
 
