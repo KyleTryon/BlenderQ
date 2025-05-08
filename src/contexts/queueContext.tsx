@@ -1,4 +1,5 @@
 import { GetTaskProbeData } from 'blender/index.js'
+import { BlenderTask } from 'blender/types.js'
 import path from 'path'
 import {
     createContext,
@@ -16,15 +17,13 @@ export type QueueTaskStatus =
     | 'COMPLETED'
     | 'FAILED'
 
-export type QueueTask = {
+export type QueueTask = BlenderTask & {
     enabled: boolean
     name: string
     status: QueueTaskStatus
     progress: number
     time: string
     blendFile: string
-    outputFile: string
-    frames: number
 }
 
 export type QueueContextType = {
@@ -52,41 +51,45 @@ export const QueueProvider: FC<{
             return
 
         // 1.  Initialise every task as "INITIALIZING"
-        const initial: QueueTask[] = blendFiles.map((blendFile) => ({
+        const initial = blendFiles.map((blendFile) => ({
             enabled: true,
             name: path.basename(blendFile).split('.')[0],
             status: 'INITIALIZING',
             progress: 0,
             time: '00:00',
             blendFile,
-            outputFile: '',
+            renderPath: '',
+            renderFilename: '',
+            renderExtension: '',
             frames: 0,
-        }))
+        })) satisfies QueueTask[]
         setTasks(initial)
 
         // 2.  Probe sequentially so the UI updates one at a time
         const probeSequentially = async () => {
             for (const blendFile of blendFiles) {
                 try {
-                    const { outputFile, frames } =
+                    const { frames, renderPath, renderFilename, renderExtension } =
                         await GetTaskProbeData(blendFile)
 
                     // mark as QUEUED
-                    setTasks((prev) =>
+                    setTasks((prev): QueueTask[] =>
                         prev.map((t) =>
                             t.blendFile === blendFile
-                                ? { ...t, status: 'QUEUED', outputFile, frames }
+                                ? { ...t, status: 'QUEUED', renderPath, renderFilename, renderExtension, frames }
                                 : t
                         )
                     )
                 } catch {
-                    setTasks((prev) =>
+                    setTasks((prev): QueueTask[] =>
                         prev.map((t) =>
                             t.blendFile === blendFile
                                 ? {
                                       ...t,
                                       status: 'FAILED',
-                                      outputFile: '',
+                                      renderPath: '',
+                                      renderFilename: '',
+                                      renderExtension: '',
                                       frames: 0,
                                   }
                                 : t

@@ -1,4 +1,6 @@
 export type BlenderTask = {
-    outputFile: string
     frames: number
+    renderPath: string
+    renderFilename: string
+    renderExtension: string
 }

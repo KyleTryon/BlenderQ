@@ -21,16 +21,21 @@ const InnerQueueScreen: React.FC = () => {
             { label: 'PROGRESS', dataKey: 'progress', width: 18 },
             { label: 'TIME', dataKey: 'time', width: 6 },
             { label: 'FRAMES', dataKey: 'frames', width: 7 },
-            { label: 'OUTPUT', dataKey: 'outputFile', width: 32 },
+            { label: 'OUTPUT', dataKey: 'output', width: 32 },
         ],
         [icons]
     )
 
     const tableData = useMemo(
         () =>
-            tasks.map(({ enabled, ...rest }) => ({
-                ...rest,
-                enabled: enabled ? icons.checkBoxFilled : icons.checkBoxOpen,
+            tasks.map(({ ...task }) => ({
+                enabled: task.enabled ? icons.checkBoxFilled : icons.checkBoxOpen,
+                status: task.status.toUpperCase(),
+                name: task.name,
+                progress: `${task.progress.toFixed(2)}%`,
+                time: task.time,
+                frames: task.frames,
+                output: `${task.renderPath}${task.renderFilename}${task.renderExtension}`,
             })),
         [tasks, icons]
     )

@@ -39,15 +39,11 @@ export const getTaskProbeData = async (
         throw err
     }
 
-    /**
-     * Blender writes a lot of startup logs to stdout before our Python
-     * script prints its JSON summary.  Scan lines from the end until one
-     * parses as JSON.
-     */
-    let info: any | undefined
+    let info: BlenderTask | undefined
     for (const line of stdout.trim().split('\n').reverse()) {
         try {
             info = JSON.parse(line)
+            dir(info, { depth: null })
             break
         } catch {
             /* keep scanning */
@@ -61,8 +57,9 @@ export const getTaskProbeData = async (
     }
 
     return {
-        // Support both camelCase and snake_case from task_probe.py
-        outputFile: info.renderPath,
         frames: info.frames ?? 0,
+        renderFilename: info.renderFilename,
+        renderExtension: info.renderExtension,
+        renderPath: info.renderPath,
     }
 }
