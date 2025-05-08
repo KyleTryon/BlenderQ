@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 import { IconsProvider } from 'contexts/iconsContext.js'
 import { NavProvider, useNavigation } from 'contexts/navContext.js'
+import { QueueProvider } from 'contexts/queueContext.js'
 import { ThemeProvider } from 'contexts/themeContext.js'
 import { FC } from 'react'
 
@@ -19,6 +20,22 @@ const CurrentScreen: FC = () => {
     return <Screen {...params} />
 }
 
+const RoutedLayers: FC = () => {
+    const { route, params } = useNavigation()
+
+    // Only initialise queue when we’re on the queue route
+    const blendFiles =
+        route === '/queue' && Array.isArray((params as any).blendFiles)
+            ? (params as any).blendFiles
+            : undefined
+
+    return (
+        <QueueProvider blendFiles={blendFiles}>
+            <CurrentScreen />
+        </QueueProvider>
+    )
+}
+
 /** Top‑level router that seeds the NavProvider with the initial route
  *  and provides the global ThemeProvider.
  */
@@ -27,10 +44,13 @@ export const AppRouter: FC<AppRouterProps> = ({
     initialParams,
 }) => (
     <ThemeProvider>
-        <NavProvider initialRoute={initialRoute} initialParams={initialParams}>
-            <IconsProvider style="utf">
-                <CurrentScreen />
-            </IconsProvider>
-        </NavProvider>
+        <IconsProvider style="utf">
+            <NavProvider
+                initialRoute={initialRoute}
+                initialParams={initialParams}
+            >
+                <RoutedLayers />
+            </NavProvider>
+        </IconsProvider>
     </ThemeProvider>
 )
