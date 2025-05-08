@@ -16,12 +16,12 @@ const InnerQueueScreen: React.FC = () => {
     const columns = useMemo<Column<Record<string, any>>[]>(
         () => [
             { label: icons.checkBoxOpen, dataKey: 'enabled', width: 4 },
-            { label: 'STATUS', dataKey: 'status', width: 11, color: 'cyan' },
-            { label: 'NAME', dataKey: 'name', width: 18 },
+            { label: 'STATUS', dataKey: 'status', width: 10, color: 'cyan' },
+            { label: 'NAME', dataKey: 'name', width: 12 },
             { label: 'PROGRESS', dataKey: 'progress', width: 18 },
             { label: 'TIME', dataKey: 'time', width: 6 },
             { label: 'FRAMES', dataKey: 'frames', width: 7 },
-            { label: 'OUTPUT', dataKey: 'outputFile', width: 20 },
+            { label: 'OUTPUT', dataKey: 'outputFile', width: 32 },
         ],
         [icons]
     )
@@ -50,6 +50,16 @@ const InnerQueueScreen: React.FC = () => {
                 action: () => {
                     navigate('/queue/editTaskOutput', {
                         taskIndex: selectedRow,
+                    })
+                },
+            },
+            {
+                input: 'a',
+                label: '[a]',
+                description: 'Edit output (all)',
+                action: () => {
+                    navigate('/queue/editTaskOutput', {
+                        taskIndex: -1,
                     })
                 },
             },

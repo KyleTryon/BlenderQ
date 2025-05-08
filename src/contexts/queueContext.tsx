@@ -109,9 +109,9 @@ export const QueueProvider: FC<{
 
     const setTaskOutput = useCallback(
         (index: number, outputFile: string) => {
-            setTasks((prev) =>
+            setTasks(prev =>
                 prev.map((task, i) =>
-                    i === index ? { ...task, outputFile } : task
+                    index === -1 || i === index ? { ...task, outputFile } : task
                 )
             )
         },
