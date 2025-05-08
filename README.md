@@ -16,6 +16,7 @@ BlenderQ is a terminal UI (TUI) tool for managing a queue of local Blender rende
 ## Prerequisites
 
 - Node.js (v20+)
+- Blender (v3.5+)
 - [Nerd Fonts](https://www.nerdfonts.com/) (for the icons)
 
 ## Usage
@@ -29,18 +30,18 @@ Options:
   -d, --dir <dir>         Set the directory to start in
   -b, --blend <blend...>  Set the blend files to open
   -h, --help              display help for command
-
 ```
 
-## Why Node.js instead of Python?
+## Why Node.js instead of Python or Go?
 
-I’m more comfortable working in TypeScript, and it let me build something functional and maintainable faster than if I had done it in Python. I might eventually port it to Python to tie into Blender more directly, and likely use less resources.
+I chose Node.js (TypeScript) primarily because it’s where my strengths lie, and I needed to quickly deliver a functional, maintainable TUI. Python and Go were attractive options, but they lacked pre-built components that matched my requirements, which would have significantly increased development time. Additionally, React-inspired design patterns in Ink made Node.js especially appealing for building clean, responsive terminal UIs. While I may explore Python in the future to integrate more directly with Blender, Node.js allowed me to efficiently ship something that works right now.
 
 ## Getting Started
 
-Make sure you have Blender installed and available in your system path.
+Make sure you have Blender installed.
 
 ```bash
 pnpm install
-pnpm dev
+pnpm build
+pnpm start
 ```
