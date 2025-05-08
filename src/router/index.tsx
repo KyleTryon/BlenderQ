@@ -42,9 +42,10 @@ const RoutedLayers: FC = () => {
 export const AppRouter: FC<AppRouterProps> = ({
     initialRoute,
     initialParams,
+    config,
 }) => (
     <ThemeProvider>
-        <IconsProvider style="utf">
+        <IconsProvider style={config.nerdFont ? 'utf' : 'emoji'}>
             <NavProvider
                 initialRoute={initialRoute}
                 initialParams={initialParams}

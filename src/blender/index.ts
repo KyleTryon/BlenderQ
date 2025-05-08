@@ -11,4 +11,3 @@ export const RunTaskRender = runTaskRender.bind(null, BLENDER_EXEC) as (
     task: BlenderTask,
     onProgress: (pct: number) => void
 ) => Promise<'DONE'>
-

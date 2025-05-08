@@ -1,8 +1,11 @@
+import { Config } from 'utils/config.js'
+
 import { routes } from './registerRoutes.js'
 
 export type AppRouterProps = {
     initialRoute: RouteKey
     initialParams: any
+    config: Config
 }
 
 export type RouteKey = keyof typeof routes

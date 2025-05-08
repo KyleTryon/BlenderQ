@@ -1,8 +1,8 @@
 import { RunTaskRender } from 'blender/index.js'
-import { useRef } from 'react'
 import { GetTaskProbeData } from 'blender/index.js'
 import { BlenderTask } from 'blender/types.js'
 import path from 'path'
+import { useRef } from 'react'
 import {
     createContext,
     type FC,
@@ -174,7 +174,7 @@ export const QueueProvider: FC<{
             if (!task.enabled || task.status !== 'QUEUED') continue
 
             // mark as RUNNING and reset progress
-            setTasks(prev =>
+            setTasks((prev) =>
                 prev.map((t, idx) =>
                     idx === i ? { ...t, status: 'RUNNING', progress: 0 } : t
                 )
@@ -182,7 +182,7 @@ export const QueueProvider: FC<{
 
             try {
                 await RunTaskRender(task.blendFile, task, (pct) => {
-                    setTasks(prev =>
+                    setTasks((prev) =>
                         prev.map((t, idx) =>
                             idx === i ? { ...t, progress: pct } : t
                         )
@@ -190,7 +190,7 @@ export const QueueProvider: FC<{
                 })
 
                 // mark as COMPLETED
-                setTasks(prev =>
+                setTasks((prev) =>
                     prev.map((t, idx) =>
                         idx === i
                             ? { ...t, status: 'COMPLETED', progress: 100 }
@@ -199,7 +199,7 @@ export const QueueProvider: FC<{
                 )
             } catch (err) {
                 // mark as FAILED
-                setTasks(prev =>
+                setTasks((prev) =>
                     prev.map((t, idx) =>
                         idx === i ? { ...t, status: 'FAILED' } : t
                     )
