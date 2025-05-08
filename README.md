@@ -2,7 +2,7 @@
 
 BlenderQ is a terminal UI (TUI) tool for managing a queue of local Blender renders. Add a collection of `.blend` files to a queue and monitor their progress from the terminal.
 
-**⚠️ _Still in development!_** This is a work in progress and not yet ready for use.
+**⚠️ _Still in Beta!_**: This project is in its early stages and may have bugs or incomplete features. Please report any issues you encounter.
 
 ![Demo](.github/img/demo.gif)
 
