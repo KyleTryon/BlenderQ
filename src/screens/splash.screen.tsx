@@ -30,6 +30,7 @@ const SplashScreen: React.FC = () => {
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
+            minHeight={16}
         >
             <Gradient name="rainbow">
                 <BigText text="BlenderQ" />

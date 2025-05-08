@@ -13,7 +13,9 @@ export const DefaultLayout: React.FC<DefaultLayoutProps> = ({
     const { theme } = useTheme()
     return (
         <>
-            <Box {...theme.styles.frame()}>{children}</Box>
+            <Box {...theme.styles.frame()} minHeight={16}>
+                {children}
+            </Box>
             <CommandBar commands={[...(commands ?? [])]} />
         </>
     )
