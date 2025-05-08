@@ -14,8 +14,8 @@ export const DefaultLayout: React.FC<DefaultLayoutProps> = ({
     return (
         <>
             <Box {...theme.styles.frame()} minHeight={16}>
-                <Box flexDirection='column'width='100%'>
-                {children}
+                <Box flexDirection="column" width="100%">
+                    {children}
                 </Box>
             </Box>
             <CommandBar commands={[...(commands ?? [])]} />

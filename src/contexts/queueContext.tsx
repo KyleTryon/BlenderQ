@@ -69,14 +69,25 @@ export const QueueProvider: FC<{
         const probeSequentially = async () => {
             for (const blendFile of blendFiles) {
                 try {
-                    const { frames, renderPath, renderFilename, renderExtension } =
-                        await GetTaskProbeData(blendFile)
+                    const {
+                        frames,
+                        renderPath,
+                        renderFilename,
+                        renderExtension,
+                    } = await GetTaskProbeData(blendFile)
 
                     // mark as QUEUED
                     setTasks((prev): QueueTask[] =>
                         prev.map((t) =>
                             t.blendFile === blendFile
-                                ? { ...t, status: 'QUEUED', renderPath, renderFilename, renderExtension, frames }
+                                ? {
+                                      ...t,
+                                      status: 'QUEUED',
+                                      renderPath,
+                                      renderFilename,
+                                      renderExtension,
+                                      frames,
+                                  }
                                 : t
                         )
                     )
@@ -110,19 +121,18 @@ export const QueueProvider: FC<{
         )
     }, [])
 
-    const setTaskOutput = useCallback(
-        (index: number, outputFile: string) => {
-            setTasks(prev =>
-                prev.map((task, i) =>
-                    index === -1 || i === index ? { ...task, outputFile } : task
-                )
+    const setTaskOutput = useCallback((index: number, outputFile: string) => {
+        setTasks((prev) =>
+            prev.map((task, i) =>
+                index === -1 || i === index ? { ...task, outputFile } : task
             )
-        },
-        []
-    )
+        )
+    }, [])
 
     return (
-        <QueueContext.Provider value={{ tasks, toggleTaskEnabled, setTaskOutput }}>
+        <QueueContext.Provider
+            value={{ tasks, toggleTaskEnabled, setTaskOutput }}
+        >
             {children}
         </QueueContext.Provider>
     )

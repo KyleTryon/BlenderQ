@@ -35,12 +35,12 @@ const CommandBar: React.FC<Props> = ({ commands }) => {
 
     return (
         <Box {...theme.styles.footer()}>
-            <Box flexDirection='row' width='100%'>
-            {allCommands.map(({ label, description }, idx) => (
-                <Text key={idx}>
-                    {label} {description} |
-                </Text>
-            ))}
+            <Box flexDirection="row" width="100%">
+                {allCommands.map(({ label, description }, idx) => (
+                    <Text key={idx}>
+                        {label} {description} |
+                    </Text>
+                ))}
             </Box>
         </Box>
     )

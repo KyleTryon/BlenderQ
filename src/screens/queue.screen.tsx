@@ -29,7 +29,9 @@ const InnerQueueScreen: React.FC = () => {
     const tableData = useMemo(
         () =>
             tasks.map(({ ...task }) => ({
-                enabled: task.enabled ? icons.checkBoxFilled : icons.checkBoxOpen,
+                enabled: task.enabled
+                    ? icons.checkBoxFilled
+                    : icons.checkBoxOpen,
                 status: task.status.toUpperCase(),
                 name: task.name,
                 progress: `${task.progress.toFixed(2)}%`,
