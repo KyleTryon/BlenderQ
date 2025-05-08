@@ -43,7 +43,6 @@ export const getTaskProbeData = async (
     for (const line of stdout.trim().split('\n').reverse()) {
         try {
             info = JSON.parse(line)
-            dir(info, { depth: null })
             break
         } catch {
             /* keep scanning */
