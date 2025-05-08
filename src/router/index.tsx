@@ -1,82 +1,36 @@
 /// <reference types="vite/client" />
-import { createContext, FC, useCallback, useContext, useState } from 'react'
-import { IconsProvider } from 'utils/icons.js'
+import { IconsProvider } from 'contexts/iconsContext.js'
+import { NavProvider, useNavigation } from 'contexts/navContext.js'
+import { ThemeProvider } from 'contexts/themeContext.js'
+import { FC } from 'react'
 
-/**
- * 1.  Eager-import all *.screen.tsx files at startup
- * (Vite rewrites these to proper ESM paths in build)
- */
-const modules = import.meta.glob('./../screens/**/*.screen.tsx', {
-    eager: true,
-}) as Record<string, { default: { route: string; component: FC<any> } }>
+import { routes } from './registerRoutes.js'
+import { AppRouterProps, RouteParams } from './types.js'
 
-const modulePaths = Object.keys(modules)
-if (modulePaths.length === 0) {
-    console.error(
-        '⚠️  import.meta.glob matched zero .screen.tsx files ‑ check the glob pattern and Vite root.'
-    )
-}
+/** Renders whichever screen the navigation context says is current. */
+const CurrentScreen: FC = () => {
+    const { route, params } = useNavigation()
+    const Screen = routes[route] as FC<RouteParams<typeof route>> | undefined
 
-/**
- * 2.  Build a route → component map
- */
-const routeEntries = Object.values(modules).map(
-    (m) => [m.default.route, m.default.component] as const
-)
-export const routes = Object.fromEntries(routeEntries) as {
-    [K in (typeof routeEntries)[number] as K[0]]: K[1]
-}
-
-/**
- * 3.  Derive helper types
- */
-export type RouteKey = keyof typeof routes
-
-export type RouteParams<K extends RouteKey> =
-    Parameters<(typeof routes)[K]>[0] extends Record<string, unknown>
-        ? Parameters<(typeof routes)[K]>[0]
-        : never
-
-/**
- * 4.  Navigation context
- */
-type NavigateFn = <K extends RouteKey>(route: K, params: RouteParams<K>) => void
-
-type Ctx = {
-    route: RouteKey
-    params: RouteParams<RouteKey>
-    navigate: NavigateFn
-}
-const Nav = createContext<Ctx | null>(null)
-export const useNavigation = () => useContext(Nav)!
-
-/**
- * 5.  Router component
- */
-export const AppRouter: FC<{ initialRoute: RouteKey; initialParams: any }> = ({
-    initialRoute: initial,
-    initialParams,
-}) => {
-    const [state, set] = useState<{ route: RouteKey; params: any }>({
-        route: initial,
-        params: initialParams,
-    })
-
-    const navigate: NavigateFn = useCallback((route, params) => {
-        set({ route, params })
-    }, [])
-
-    const Screen = routes[state.route] as
-        | FC<RouteParams<typeof state.route>>
-        | undefined
     if (!Screen) {
-        throw new Error(`No screen found for route: ${state.route}`)
+        throw new Error(`No screen found for route: ${route}`)
     }
-    return (
-        <Nav.Provider value={{ ...state, navigate }}>
-            <IconsProvider style="utf">
-                <Screen {...state.params} />
-            </IconsProvider>
-        </Nav.Provider>
-    )
+
+    return <Screen {...params} />
 }
+
+/** Top‑level router that seeds the NavProvider with the initial route
+ *  and provides the global ThemeProvider.
+ */
+export const AppRouter: FC<AppRouterProps> = ({
+    initialRoute,
+    initialParams,
+}) => (
+    <ThemeProvider>
+        <NavProvider initialRoute={initialRoute} initialParams={initialParams}>
+            <IconsProvider style="utf">
+                <CurrentScreen />
+            </IconsProvider>
+        </NavProvider>
+    </ThemeProvider>
+)

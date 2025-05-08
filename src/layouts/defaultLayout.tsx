@@ -1,7 +1,6 @@
+import { Command, CommandBar } from 'components/commandBar.js'
+import { useTheme } from 'contexts/themeContext.js'
 import { Box } from 'ink'
-
-import { Command, CommandBar } from '../components/commandBar.js'
-import { useTheme } from '../theme/theme.js'
 
 type DefaultLayoutProps = {
     children: React.ReactNode

@@ -1,11 +1,10 @@
+import { useNavigation } from 'contexts/navContext.js'
+import { useTheme } from 'contexts/themeContext.js'
 import { Box, Text } from 'ink'
 import BigText from 'ink-big-text'
 import Gradient from 'ink-gradient'
 import { useEffect, useState } from 'react'
 import { defineScreen } from 'router/defineScreen.js'
-import { useNavigation } from 'router/index.js'
-
-import { useTheme } from '../theme/theme.js'
 
 const SplashScreen: React.FC = () => {
     const { theme } = useTheme()

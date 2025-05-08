@@ -1,4 +1,6 @@
 import { Command } from 'components/commandBar.js'
+import { useIcons } from 'contexts/iconsContext.js'
+import { useNavigation } from 'contexts/navContext.js'
 import fs from 'fs'
 import { Box, Text } from 'ink'
 import SelectInput from 'ink-select-input'
@@ -7,8 +9,6 @@ import os from 'os'
 import path from 'path'
 import { FC, useEffect, useState } from 'react'
 import { defineScreen } from 'router/defineScreen.js'
-import { useNavigation } from 'router/index.js'
-import { useIcons } from 'utils/icons.js'
 
 type Params = { dir?: string }
 

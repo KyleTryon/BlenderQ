@@ -1,11 +1,11 @@
 import { GetTaskProbeData } from 'blender/index.js'
 import { Command } from 'components/commandBar.js'
 import { Column, DataTable } from 'components/dataTable.js'
+import { useIcons } from 'contexts/iconsContext.js'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import path from 'path'
 import React, { useEffect, useMemo, useState } from 'react'
 import { defineScreen } from 'router/defineScreen.js'
-import { useIcons } from 'utils/icons.js'
 
 type QueueTaskStatus =
     | 'INITIALIZING'

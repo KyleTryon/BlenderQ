@@ -1,8 +1,9 @@
 import { Command as Commander } from 'commander'
 import { render } from 'ink'
+import { RouteKey } from 'router/types.js'
 
 import pJSON from '../package.json' with { type: 'json' }
-import { AppRouter, RouteKey } from './router/index.js'
+import { AppRouter } from './router/index.js'
 
 const program = new Commander()
 program
