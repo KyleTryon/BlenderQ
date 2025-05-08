@@ -2,14 +2,14 @@
     "name": "blenderq",
     "version": "0.1.0",
     "description": "A TUI for managing a queue of local Blender rendering jobs.",
-    "main": "src/app.tsx",
+    "main": "dist/app.js",
     "type": "module",
     "author": {
         "name": "TechSquidTV",
         "email": "npm@techsquidtv.com"
     },
     "bin": {
-        "blenderq": "./dist/app.js"
+        "blenderq": "dist/app.js"
     },
     "scripts": {
         "dev": "vite-node --watch src/app.tsx",

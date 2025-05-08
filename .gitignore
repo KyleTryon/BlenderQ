@@ -6,6 +6,7 @@ yarn.lock
 
 # Build output
 dist/
+*.tgz
 
 # Logs
 npm-debug.log*
