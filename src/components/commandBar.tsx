@@ -38,7 +38,8 @@ const CommandBar: React.FC<Props> = ({ commands }) => {
             <Box flexDirection="row" width="100%">
                 {allCommands.map(({ label, description }, idx) => (
                     <Text key={idx}>
-                        {label} {description} |
+                        {label} {description}
+                        {idx < allCommands.length - 1 ? ' |  ' : ''}
                     </Text>
                 ))}
             </Box>
