@@ -6,7 +6,7 @@ Set TypingSpeed 80ms # 500ms
 
 Set FontSize 20
 Set Width 1600
-Set Height 780
+Set Height 800
 
 Type "pnpm start"
 Sleep 400ms
@@ -28,7 +28,7 @@ Sleep 3s
 # Edit output
 Type "a"
 Sleep 2s
-Type "${HOME}/${NAME}/"
+Type "/tmp/${NAME}/cube####${EXT}"
 Sleep 2s
 Enter
 
