@@ -1,7 +1,9 @@
 src/
 vite.config.ts
+eslint.*
 pnpm-lock.yaml
 tsconfig.json
 .eslint*
 .prettier*
 test/
+*.tgz
