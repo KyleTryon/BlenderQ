@@ -1,6 +1,7 @@
 import { Command } from 'components/commandBar.js'
 import { Column, DataTable } from 'components/dataTable.js'
 import { useIcons } from 'contexts/iconsContext.js'
+import { useNavigation } from 'contexts/navContext.js'
 import { useQueueContext } from 'contexts/queueContext.js'
 import { DefaultLayout } from 'layouts/defaultLayout.js'
 import React, { useMemo, useState } from 'react'
@@ -10,6 +11,7 @@ const InnerQueueScreen: React.FC = () => {
     const { tasks, toggleTaskEnabled } = useQueueContext()
     const icons = useIcons()
     const [selectedRow, setSelectedRow] = useState(0)
+    const { navigate } = useNavigation()
 
     const columns = useMemo<Column<Record<string, any>>[]>(
         () => [
@@ -45,7 +47,11 @@ const InnerQueueScreen: React.FC = () => {
                 input: 'e',
                 label: '[e]',
                 description: 'Edit output (selected)',
-                action: () => {},
+                action: () => {
+                    navigate('/queue/editTaskOutput', {
+                        taskIndex: selectedRow,
+                    })
+                },
             },
             {
                 input: ' ',

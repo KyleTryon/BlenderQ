@@ -30,6 +30,7 @@ export type QueueTask = {
 export type QueueContextType = {
     tasks: QueueTask[]
     toggleTaskEnabled: (index: number) => void
+    setTaskOutput: (index: number, outputFile: string) => void
 }
 
 export const QueueContext = createContext<QueueContextType | undefined>(
@@ -106,8 +107,19 @@ export const QueueProvider: FC<{
         )
     }, [])
 
+    const setTaskOutput = useCallback(
+        (index: number, outputFile: string) => {
+            setTasks((prev) =>
+                prev.map((task, i) =>
+                    i === index ? { ...task, outputFile } : task
+                )
+            )
+        },
+        []
+    )
+
     return (
-        <QueueContext.Provider value={{ tasks, toggleTaskEnabled }}>
+        <QueueContext.Provider value={{ tasks, toggleTaskEnabled, setTaskOutput }}>
             {children}
         </QueueContext.Provider>
     )
