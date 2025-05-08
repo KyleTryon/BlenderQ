@@ -11,5 +11,6 @@ export default defineConfig({
         emptyOutDir: true,
         sourcemap: true,
         minify: false,
+        rollupOptions: { output: { banner: '#!/usr/bin/env node' } }
     },
 })
