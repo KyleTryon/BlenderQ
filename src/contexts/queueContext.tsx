@@ -12,6 +12,17 @@ import {
     useState,
 } from 'react'
 
+// -------- helpers --------
+/** Convert elapsed milliseconds → `mm:ss` */
+const formatElapsed = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000)
+    const minutes = Math.floor(totalSeconds / 60)
+        .toString()
+        .padStart(2, '0')
+    const seconds = (totalSeconds % 60).toString().padStart(2, '0')
+    return `${minutes}:${seconds}`
+}
+
 export type QueueTaskStatus =
     | 'INITIALIZING'
     | 'QUEUED'
@@ -173,35 +184,55 @@ export const QueueProvider: FC<{
             const task = tasks[i]
             if (!task.enabled || task.status !== 'QUEUED') continue
 
-            // mark as RUNNING and reset progress
+            const taskStart = Date.now() // start timer
+
+            // mark as RUNNING and reset progress/time
             setTasks((prev) =>
                 prev.map((t, idx) =>
-                    idx === i ? { ...t, status: 'RUNNING', progress: 0 } : t
+                    idx === i
+                        ? { ...t, status: 'RUNNING', progress: 0, time: '00:00' }
+                        : t
                 )
             )
 
             try {
                 await RunTaskRender(task.blendFile, task, (pct) => {
+                    const elapsed = Date.now() - taskStart
                     setTasks((prev) =>
                         prev.map((t, idx) =>
-                            idx === i ? { ...t, progress: pct } : t
+                            idx === i
+                                ? {
+                                      ...t,
+                                      progress: pct,
+                                      time: formatElapsed(elapsed),
+                                  }
+                                : t
                         )
                     )
                 })
 
                 // mark as COMPLETED
+                const finalElapsed = Date.now() - taskStart
                 setTasks((prev) =>
                     prev.map((t, idx) =>
                         idx === i
-                            ? { ...t, status: 'COMPLETED', progress: 100 }
+                            ? {
+                                  ...t,
+                                  status: 'COMPLETED',
+                                  progress: 100,
+                                  time: formatElapsed(finalElapsed),
+                              }
                             : t
                     )
                 )
             } catch (err) {
                 // mark as FAILED
+                const failElapsed = Date.now() - taskStart
                 setTasks((prev) =>
                     prev.map((t, idx) =>
-                        idx === i ? { ...t, status: 'FAILED' } : t
+                        idx === i
+                            ? { ...t, status: 'FAILED', time: formatElapsed(failElapsed) }
+                            : t
                     )
                 )
             }
