@@ -4,7 +4,7 @@ BlenderQ is a terminal UI (TUI) tool for managing a queue of local Blender rende
 
 **⚠️ _Still in Beta!_**: This project is in its early stages and may have bugs or incomplete features. Please report any issues you encounter.
 
-![Demo](.github/img/demo.gif)
+![Demo](https://raw.githubusercontent.com/KyleTryon/BlenderQ/main/.github/img/demo.gif)
 
 ## Features
 
