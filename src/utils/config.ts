@@ -11,10 +11,9 @@ export type Config = {
 
 export const GetConfig = async (): Promise<Config | undefined> => {
     try {
-        const config = await import(CONFIG_LOCATION, {
-            assert: { type: 'json' },
-        })
-        return config
+        // Read the config file contents directly
+        const data = await fs.promises.readFile(CONFIG_LOCATION, 'utf-8')
+        return JSON.parse(data) as Config
     } catch (e) {
         return undefined
     }
