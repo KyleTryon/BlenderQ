@@ -21,7 +21,7 @@ const InnerQueueScreen: React.FC = () => {
             { label: 'PROGRESS', dataKey: 'progress', width: 10 },
             { label: 'TIME', dataKey: 'time', width: 6 },
             { label: 'FRAMES', dataKey: 'frames', width: 6 },
-            { label: 'OUTPUT', dataKey: 'output', width: 32 },
+            { label: 'OUTPUT', dataKey: 'output', width: 64 },
         ],
         [icons]
     )
