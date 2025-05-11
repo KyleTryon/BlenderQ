@@ -79,6 +79,36 @@ const FilePickerScreen: FC<Params> = ({ dir: initialDir }) => {
         },
     }
 
+    // Helper to find all .blend files recursively in a directory
+    const findBlendFilesRecursively = (dir: string): string[] => {
+        let results: string[] = []
+        const entries = fs.readdirSync(dir, { withFileTypes: true })
+        for (const entry of entries) {
+            if (entry.name.startsWith('.')) continue
+            const fullPath = path.join(dir, entry.name)
+            if (entry.isDirectory()) {
+                results.push(...findBlendFilesRecursively(fullPath))
+            } else if (entry.name.endsWith('.blend')) {
+                results.push(fullPath)
+            }
+        }
+        return results
+    }
+
+    const findCommand: Command = {
+        input: 'f',
+        label: '[f]',
+        description: 'Find .blend files recursively',
+        action: () => {
+            const blendFiles = findBlendFilesRecursively(currentDir)
+            if (blendFiles.length > 0) {
+                navigate('/queue', { blendFiles })
+            } else {
+                setNotice('No .blend files found recursively')
+            }
+        },
+    }
+
     const enterCommand: Command = {
         input: (key) => key.return,
         label: icons.enterKey,
@@ -87,7 +117,7 @@ const FilePickerScreen: FC<Params> = ({ dir: initialDir }) => {
     }
 
     return (
-        <DefaultLayout commands={[goToCommand, enterCommand, selectCommand]}>
+        <DefaultLayout commands={[goToCommand, enterCommand, selectCommand, findCommand]}>
             <Text>Locate blender files in: {currentDir}</Text>
             <Box marginTop={1}>
                 <SelectInput items={files} onSelect={handleSelect} />
