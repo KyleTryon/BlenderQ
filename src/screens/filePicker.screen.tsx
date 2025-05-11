@@ -81,7 +81,7 @@ const FilePickerScreen: FC<Params> = ({ dir: initialDir }) => {
 
     // Helper to find all .blend files recursively in a directory
     const findBlendFilesRecursively = (dir: string): string[] => {
-        let results: string[] = []
+        const results: string[] = []
         const entries = fs.readdirSync(dir, { withFileTypes: true })
         for (const entry of entries) {
             if (entry.name.startsWith('.')) continue

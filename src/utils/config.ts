@@ -15,6 +15,7 @@ export const GetConfig = async (): Promise<Config | undefined> => {
         const data = await fs.promises.readFile(CONFIG_LOCATION, 'utf-8')
         return JSON.parse(data) as Config
     } catch (e) {
+        console.error(`Failed to read config file: ${e}`)
         return undefined
     }
 }
@@ -23,9 +24,8 @@ export const SetConfig = async (config: Config): Promise<void> => {
     try {
         // Await the completion of the file write operation.
         await fsWriteFile(CONFIG_LOCATION, JSON.stringify(config, null, 4))
-    } catch (e) {
-        console.error(`Failed to write config file: ${e}`)
-        throw e // Re-throw the error to propagate it.
+    } catch (err) {
+        throw err // Re-throw the error to propagate it.
     }
 }
 

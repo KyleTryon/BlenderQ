@@ -28,6 +28,10 @@ export async function GetBlenderPath(): Promise<string> {
         } catch (err) {
             {
                 /* Ignore error if the path is not executable */
+                console.error(
+                    `BLENDER_PATH is set but the path is not executable: ${process.env.BLENDER_PATH}`
+                )
+                console.error(err)
             }
         }
     }
@@ -50,6 +54,7 @@ export async function GetBlenderPath(): Promise<string> {
     } catch (err) {
         {
             /* Ignore error if 'which' or 'where' command fails */
+           console.error(err)
         }
     }
 
@@ -74,6 +79,7 @@ export async function GetBlenderPath(): Promise<string> {
         } catch (err) {
             {
                 /* Continue if directory doesn't exist */
+               console.error(err)
             }
         }
 
@@ -82,7 +88,13 @@ export async function GetBlenderPath(): Promise<string> {
                 await fsAccess(location, fs.constants.X_OK)
                 return location
             } catch (err) {
-                // Continue to next location
+                {
+                    /* Continue to next location */
+                    console.error(
+                        `Error checking access for location: ${location}`
+                    )
+                    console.error(err)
+                }
             }
         }
     } else if (platform === 'win32') {
@@ -113,9 +125,7 @@ export async function GetBlenderPath(): Promise<string> {
                     }
                 }
             } catch (err) {
-                {
-                    /* Continue if directory doesn't exist */
-                }
+                console.error(err)
             }
         }
 
@@ -124,9 +134,11 @@ export async function GetBlenderPath(): Promise<string> {
                 await fsAccess(location, fs.constants.X_OK)
                 return location
             } catch (err) {
-                {
-                    /* Continue to next location */
-                }
+                // Continue to next location
+                console.error(
+                    `Error checking access for location: ${location}`
+                )
+                console.error(err)
             }
         }
     } else if (platform === 'linux') {
@@ -146,9 +158,10 @@ export async function GetBlenderPath(): Promise<string> {
                 }
             }
         } catch (err) {
-            {
-                /* Continue if directory doesn't exist */
-            }
+            console.error(
+                'Error reading /opt directory for versioned Blender installations'
+            )
+            console.error(err)
         }
 
         for (const location of linuxLocations) {
@@ -156,9 +169,8 @@ export async function GetBlenderPath(): Promise<string> {
                 await fsAccess(location, fs.constants.X_OK)
                 return location
             } catch (err) {
-                {
-                    /* Continue to next location */
-                }
+                console.error(`Error checking access for location: ${location}`)
+                console.error(err)
             }
         }
     }
@@ -177,6 +189,7 @@ async function pathExists(filePath: string): Promise<boolean> {
         await fsAccess(filePath, fs.constants.F_OK)
         return true
     } catch (err) {
+        console.error(`Error checking if path exists: ${err}`)
         return false
     }
 }
@@ -190,6 +203,7 @@ async function isExecutable(filePath: string): Promise<boolean> {
         const stats = await fsStat(filePath)
         return stats.isFile()
     } catch (err) {
+        console.error(`Error checking if file is executable: ${err}`)
         return false
     }
 }

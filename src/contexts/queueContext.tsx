@@ -227,6 +227,7 @@ export const QueueProvider: FC<{
                 )
             } catch (err) {
                 // mark as FAILED
+                console.error(err)
                 const failElapsed = Date.now() - taskStart
                 setTasks((prev) =>
                     prev.map((t, idx) =>
