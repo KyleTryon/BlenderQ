@@ -117,7 +117,9 @@ const FilePickerScreen: FC<Params> = ({ dir: initialDir }) => {
     }
 
     return (
-        <DefaultLayout commands={[goToCommand, enterCommand, selectCommand, findCommand]}>
+        <DefaultLayout
+            commands={[goToCommand, enterCommand, selectCommand, findCommand]}
+        >
             <Text>Locate blender files in: {currentDir}</Text>
             <Box marginTop={1}>
                 <SelectInput items={files} onSelect={handleSelect} />

@@ -54,7 +54,7 @@ export async function GetBlenderPath(): Promise<string> {
     } catch (err) {
         {
             /* Ignore error if 'which' or 'where' command fails */
-           console.error(err)
+            console.error(err)
         }
     }
 
@@ -79,7 +79,7 @@ export async function GetBlenderPath(): Promise<string> {
         } catch (err) {
             {
                 /* Continue if directory doesn't exist */
-               console.error(err)
+                console.error(err)
             }
         }
 
@@ -135,9 +135,7 @@ export async function GetBlenderPath(): Promise<string> {
                 return location
             } catch (err) {
                 // Continue to next location
-                console.error(
-                    `Error checking access for location: ${location}`
-                )
+                console.error(`Error checking access for location: ${location}`)
                 console.error(err)
             }
         }

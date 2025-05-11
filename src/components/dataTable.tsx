@@ -1,5 +1,5 @@
 import { useStdoutDimensions } from 'hooks/useStdoutDimensions.js'
-import { Box, Text,useInput } from 'ink'
+import { Box, Text, useInput } from 'ink'
 import React, { useEffect, useState } from 'react'
 
 export type Column<Row> = {
@@ -21,27 +21,24 @@ export const DataTable: React.FC<{
     const { data, columns, selected, onSelect } = props
 
     // Determine fixed widths and flex units
-    const fixedWidths = columns.map(col =>
+    const fixedWidths = columns.map((col) =>
         typeof col.width === 'number'
             ? col.width
             : typeof col.width === 'string' && col.width.startsWith('flex-')
-            ? 0 // flex columns count later
-            : col.label.length
+              ? 0 // flex columns count later
+              : col.label.length
     )
     const totalFixed = fixedWidths.reduce((a, b) => a + b, 0)
     const totalSpaces = columns.length // one space between columns
-    const flexCols = columns.map(col =>
+    const flexCols = columns.map((col) =>
         typeof col.width === 'string' && col.width.startsWith('flex-')
             ? parseInt(col.width.split('-')[1], 10)
             : 0
     )
     const totalFlexUnits = flexCols.reduce((a, b) => a + b, 0)
-    const remaining = Math.max(
-        0,
-        termWidth - totalFixed - totalSpaces
-    )
+    const remaining = Math.max(0, termWidth - totalFixed - totalSpaces)
     // Allocate widths
-    const flexWidths = flexCols.map(units =>
+    const flexWidths = flexCols.map((units) =>
         totalFlexUnits > 0
             ? Math.floor((units / totalFlexUnits) * remaining)
             : 0

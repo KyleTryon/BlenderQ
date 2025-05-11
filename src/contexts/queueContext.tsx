@@ -190,7 +190,12 @@ export const QueueProvider: FC<{
             setTasks((prev) =>
                 prev.map((t, idx) =>
                     idx === i
-                        ? { ...t, status: 'RUNNING', progress: 0, time: '00:00' }
+                        ? {
+                              ...t,
+                              status: 'RUNNING',
+                              progress: 0,
+                              time: '00:00',
+                          }
                         : t
                 )
             )
@@ -232,7 +237,11 @@ export const QueueProvider: FC<{
                 setTasks((prev) =>
                     prev.map((t, idx) =>
                         idx === i
-                            ? { ...t, status: 'FAILED', time: formatElapsed(failElapsed) }
+                            ? {
+                                  ...t,
+                                  status: 'FAILED',
+                                  time: formatElapsed(failElapsed),
+                              }
                             : t
                     )
                 )
