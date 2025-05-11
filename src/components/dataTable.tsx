@@ -1,24 +1,6 @@
-import { Box, useInput, Text } from 'ink'
+import { useStdoutDimensions } from 'hooks/useStdoutDimensions.js'
+import { Box, Text,useInput } from 'ink'
 import React, { useEffect, useState } from 'react'
-
-// Inline substitute for ink-use-stdout-dimensions
-function useStdoutDimensions(): [number, number] {
-    const [dimensions, setDimensions] = useState<[number, number]>(() => {
-        const { columns = 0, rows = 0 } = process.stdout;
-        return [columns, rows];
-    });
-    useEffect(() => {
-        const onResize = () => {
-            const { columns = 0, rows = 0 } = process.stdout;
-            setDimensions([columns, rows]);
-        };
-        process.stdout.on('resize', onResize);
-        return () => {
-            process.stdout.off('resize', onResize);
-        };
-    }, []);
-    return dimensions;
-}
 
 export type Column<Row> = {
     label: string
@@ -66,7 +48,7 @@ export const DataTable: React.FC<{
     )
     // Distribute any leftover columns to the first flex columns
     let leftover = remaining - flexWidths.reduce((a, b) => a + b, 0)
-    const extraWidths = flexCols.map((units, idx) => {
+    const extraWidths = flexCols.map((units) => {
         if (leftover > 0 && units > 0) {
             leftover--
             return 1
