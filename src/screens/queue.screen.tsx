@@ -17,11 +17,11 @@ const InnerQueueScreen: React.FC = () => {
         () => [
             { label: icons.checkBoxOpen, dataKey: 'enabled', width: 4 },
             { label: 'STATUS', dataKey: 'status', width: 10, color: 'cyan' },
-            { label: 'NAME', dataKey: 'name', width: 12 },
+            { label: 'NAME', dataKey: 'name', width: 18 },
             { label: 'PROGRESS', dataKey: 'progress', width: 10 },
             { label: 'TIME', dataKey: 'time', width: 6 },
             { label: 'FRAMES', dataKey: 'frames', width: 6 },
-            { label: 'OUTPUT', dataKey: 'output', width: 64 },
+            { label: 'OUTPUT', dataKey: 'output', width: 'flex-1' },
         ],
         [icons]
     )

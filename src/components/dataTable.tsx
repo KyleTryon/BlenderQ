@@ -1,10 +1,29 @@
-import { Box, Text, useInput } from 'ink'
+import { Box, useInput, Text } from 'ink'
 import React, { useEffect, useState } from 'react'
+
+// Inline substitute for ink-use-stdout-dimensions
+function useStdoutDimensions(): [number, number] {
+    const [dimensions, setDimensions] = useState<[number, number]>(() => {
+        const { columns = 0, rows = 0 } = process.stdout;
+        return [columns, rows];
+    });
+    useEffect(() => {
+        const onResize = () => {
+            const { columns = 0, rows = 0 } = process.stdout;
+            setDimensions([columns, rows]);
+        };
+        process.stdout.on('resize', onResize);
+        return () => {
+            process.stdout.off('resize', onResize);
+        };
+    }, []);
+    return dimensions;
+}
 
 export type Column<Row> = {
     label: string
     dataKey: keyof Row
-    width?: number // min width; default = label.length
+    width?: number | `flex-${number}` // number = fixed min width; flex-N = share of remaining space
     color?: string // ink color name
 }
 
@@ -16,7 +35,53 @@ export const DataTable: React.FC<{
     /** Callback fired whenever the selected row changes. */
     onSelect?: (index: number) => void
 }> = (props) => {
+    const [termWidth] = useStdoutDimensions()
     const { data, columns, selected, onSelect } = props
+
+    // Determine fixed widths and flex units
+    const fixedWidths = columns.map(col =>
+        typeof col.width === 'number'
+            ? col.width
+            : typeof col.width === 'string' && col.width.startsWith('flex-')
+            ? 0 // flex columns count later
+            : col.label.length
+    )
+    const totalFixed = fixedWidths.reduce((a, b) => a + b, 0)
+    const totalSpaces = columns.length // one space between columns
+    const flexCols = columns.map(col =>
+        typeof col.width === 'string' && col.width.startsWith('flex-')
+            ? parseInt(col.width.split('-')[1], 10)
+            : 0
+    )
+    const totalFlexUnits = flexCols.reduce((a, b) => a + b, 0)
+    const remaining = Math.max(
+        0,
+        termWidth - totalFixed - totalSpaces
+    )
+    // Allocate widths
+    const flexWidths = flexCols.map(units =>
+        totalFlexUnits > 0
+            ? Math.floor((units / totalFlexUnits) * remaining)
+            : 0
+    )
+    // Distribute any leftover columns to the first flex columns
+    let leftover = remaining - flexWidths.reduce((a, b) => a + b, 0)
+    const extraWidths = flexCols.map((units, idx) => {
+        if (leftover > 0 && units > 0) {
+            leftover--
+            return 1
+        }
+        return 0
+    })
+    // Final widths per column
+    const colWidths = columns.map((col, idx) => {
+        if (typeof col.width === 'number') return col.width
+        if (typeof col.width === 'string' && col.width.startsWith('flex-')) {
+            return flexWidths[idx] + extraWidths[idx]
+        }
+        return col.label.length
+    })
+
     const [internalSelected, setInternalSelected] = useState(selected ?? 0)
 
     // keep internal state in sync when controlled
@@ -45,9 +110,9 @@ export const DataTable: React.FC<{
     return (
         <Box flexDirection="column">
             <Box>
-                {columns.map((col) => (
+                {columns.map((col, colIndex) => (
                     <Text bold key={String(col.dataKey)}>
-                        {fmt(col.label, col.width ?? col.label.length)}{' '}
+                        {fmt(col.label, colWidths[colIndex])}{' '}
                     </Text>
                 ))}
             </Box>
@@ -56,9 +121,9 @@ export const DataTable: React.FC<{
                 const isSelected = idx === current
                 return (
                     <Box key={idx}>
-                        {columns.map((col) => {
+                        {columns.map((col, colIndex) => {
                             const raw = String(row[col.dataKey] ?? '')
-                            const cell = fmt(raw, col.width ?? col.label.length)
+                            const cell = fmt(raw, colWidths[colIndex])
                             return (
                                 <Text
                                     key={String(col.dataKey)}
