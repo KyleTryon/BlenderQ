@@ -4,7 +4,9 @@ import { defineScreen } from 'router/defineScreen.js'
 import { Config, SetConfig } from 'utils/config.js'
 import { Icons } from 'utils/icons.js'
 
-const ConfigScreen: React.FC = () => {
+
+type ConfigScreenProps = { blendFiles?: string[] }
+const ConfigScreen: React.FC<ConfigScreenProps> = ({ blendFiles }) => {
     let config: Config
     const { navigate } = useNavigation()
     useInput((input) => {
@@ -20,7 +22,11 @@ const ConfigScreen: React.FC = () => {
             }
             SetConfig(config)
         }
-        navigate('/splash', {})
+        if (blendFiles && blendFiles.length > 0) {
+            navigate('/queue', { blendFiles })
+        } else {
+            navigate('/splash', {})
+        }
     })
     return (
         <Box

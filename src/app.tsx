@@ -6,6 +6,14 @@ import { DefaultConfig, GetConfig } from 'utils/config.js'
 import pJSON from '../package.json' with { type: 'json' }
 import { AppRouter } from './router/index.js'
 
+
+const argv = process.argv.slice(2)
+if (argv.includes('-v') || argv.includes('--version')) {
+    // Print only the version and exit
+    console.log(pJSON.version)
+    process.exit(0)
+}
+
 const program = new Commander()
 program
     .version(pJSON.version)
@@ -14,7 +22,7 @@ program
     .option('-b, --blend <blend...>', 'Set the blend files to open')
 
 // Parse only the user args (ignore Vite-node flags and script path)
-program.parse(process.argv.slice(2), { from: 'user' })
+program.parse(argv, { from: 'user' })
 const options = program.opts()
 let config = await GetConfig()
 
@@ -24,6 +32,9 @@ let props: any = {}
 if (!config) {
     route = '/config'
     config = DefaultConfig
+    if (options.blend) {
+        props = { blendFiles: options.blend }
+    }
 } else if (options.help) {
     program.outputHelp()
     process.exit(0)

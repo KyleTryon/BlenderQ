@@ -14,9 +14,13 @@ export const GetConfig = async (): Promise<Config | undefined> => {
         // Read the config file contents directly
         const data = await fs.promises.readFile(CONFIG_LOCATION, 'utf-8')
         return JSON.parse(data) as Config
-    } catch (e) {
-        console.error(`Failed to read config file: ${e}`)
-        return undefined
+    } catch (e: any) {
+        // Only return undefined if file does not exist
+        if (e.code === 'ENOENT') {
+            return undefined
+        }
+        // For other errors, rethrow
+        throw e
     }
 }
 
